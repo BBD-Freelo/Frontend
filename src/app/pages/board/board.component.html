@@ -1,16 +1,18 @@
-@for (list of board; track list) {
-  <div class="example-container">
-    <h2>{{ list.name }}</h2>
-    <div
-      cdkDropList
-      [id]=list.name
-      [cdkDropListData]="list.items"
-      [cdkDropListConnectedTo]="getConnectedLists(list.name)"
-      class="example-list"
-      (cdkDropListDropped)="drop($event)">
-      @for (item of list.items; track item) {
-        <div class="example-box" cdkDrag>{{ item }}</div>
-      }
+<div class="boards-container">
+  @for (list of board; track list) {
+    <div class="container">
+      <h2>{{ list.name }}</h2>
+      <div
+        cdkDropList
+        [id]=list.id.toString()
+        [cdkDropListData]="list.items"
+        [cdkDropListConnectedTo]="getConnectedLists(list.id)"
+        class="list"
+        (cdkDropListDropped)="drop($event)">
+        @for (item of list.items; track item) {
+          <app-card [item]="item"></app-card>
+        }
+      </div>
     </div>
-  </div>
-}
+  }
+</div>
