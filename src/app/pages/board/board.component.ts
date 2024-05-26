@@ -6,68 +6,34 @@ import {
   CdkDrag,
   CdkDropList,
 } from '@angular/cdk/drag-drop';
-import { CardComponent } from '../../components/card/card.component';
+import { ticketComponent } from '../../components/ticket/ticket.component';
 import { ActivatedRoute } from "@angular/router";
 import { ApiService } from '../../services/api.service';
-import { list } from '../../interfaces/entities/list';
-import { item } from '../../interfaces/entities/item';
+import { List } from '../../interfaces/entities/list';
+import { Ticket } from '../../interfaces/entities/ticket';
+import { AddListComponent } from '../../components/add-list/add-list.component';
+import {AddTicketComponent} from "../../components/add-item/add-ticket.component";
+import {AddTicket} from "../../interfaces/components/addTicket";
 
 @Component({
   selector: 'app-board',
   standalone: true,
-  imports: [CdkDropList, CdkDrag, CardComponent],
+  imports: [CdkDropList, CdkDrag, ticketComponent, AddListComponent, AddTicketComponent],
   templateUrl: './board.component.html',
   styleUrl: './board.component.css'
 })
 export class BoardComponent {
-  board!: list[];
+  board!: List[];
   currentBoard!: string;
-  // board = [
-  //   {
-  //     id: 1,
-  //     name: "todo",
-  //     items: [
-  //       { id: 1, name: "Get to work" },
-  //       { id: 2, name: "Pick up groceries" },
-  //       { id: 3, name: "Go home" },
-  //       { id: 4, name: "Fall asleep" }
-  //     ]
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "busy",
-  //     items: [
-  //       { id: 5, name: "Get up" },
-  //       { id: 6, name: "Brush teeth" },
-  //       { id: 7, name: "Take a shower" },
-  //       { id: 8, name: "Check e-mail" },
-  //       { id: 9, name: "Walk dog" }
-  //     ]
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "done",
-  //     items: [
-  //       { id: 10, name: "grad stuff" }
-  //     ]
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "backlog",
-  //     items: [
-  //       { id: 11, name: "db versioning" }
-  //     ]
-  //   }
-  // ];
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) {
     this.route.params.subscribe( params => this.currentBoard = params["board"] );
-    this.apiService.get<list[]>(`/board/${this.currentBoard}`).subscribe((data) => {
+    this.apiService.get<List[]>(`/board/${this.currentBoard}`).subscribe((data) => {
       this.board = data;
     });
   }
 
-  drop(event: CdkDragDrop<item[]>) {
+  drop(event: CdkDragDrop<Ticket[]>) {
     if (event.previousContainer === event.container) {
       console.log(event.container.data[event.previousIndex]);
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -88,5 +54,43 @@ export class BoardComponent {
     return this.board
       .filter((list: { id: number; }) => list.id !== listName)
       .map((list: { id: { toString: () => any; }; }) => list.id.toString());
+  }
+
+  addNewList(listName: string) {
+    console.log('Adding new list:', listName);
+    const newBoard: List = {
+      id: this.board.length + 1, // Id has to be added temporarily, we should probably generate a random hash or a number that won't be in our db
+      name: listName,
+      tickets: []
+    }
+    this.board.push(newBoard);
+
+    // Once we have made lets get the id of "newBoard" delete it from the list and add the value returned by the api call
+    // Maybe we just need to return the id of the new list?
+    // so
+    // this.apiService.post<List>('/board', newBoard).subscribe((data) => {
+    //  this.board = this.board.filter((list) => list.id !== newBoard.id);
+    //  this.board.push(data);
+    // This could potentially be as simple ass returning the boards id then replacing it
+    // })
+
+  }
+
+  addNewTicket(ticket: AddTicket) {
+    const { ticketTitle, listId } = ticket;
+    const list = this.board.find(list => list.id === listId);
+
+    if (list) {
+      const newTicketId = list.tickets.length > 0 ? Math.max(...list.tickets.map(ticket => ticket.id)) + 1 : 1;
+
+      const newTicket = {
+        id: newTicketId,
+        name: ticketTitle
+      };
+
+      list.tickets.push(newTicket);
+    } else {
+      console.error(`List with ID ${listId} not found.`);
+    }
   }
 }
