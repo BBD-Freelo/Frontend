@@ -14,6 +14,10 @@ import { Ticket } from '../../interfaces/entities/ticket';
 import { AddListComponent } from '../../components/add-list/add-list.component';
 import {AddTicketComponent} from "../../components/add-item/add-ticket.component";
 import {AddTicket} from "../../interfaces/components/addTicket";
+import {User} from "../../interfaces/entities/user";
+import { HttpErrorResponse } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-board',
@@ -25,11 +29,23 @@ import {AddTicket} from "../../interfaces/components/addTicket";
 export class BoardComponent {
   board!: List[];
   currentBoard!: string;
+  found = false;
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) {
     this.route.params.subscribe( params => this.currentBoard = params["board"] );
-    this.apiService.get<List[]>(`/board/${this.currentBoard}`).subscribe((data) => {
-      this.board = data;
+    this.apiService.get<List[]>(`/board/${this.currentBoard}`).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 404) {
+          return of(null);
+        } else {
+          return of(null);
+        }
+      })
+    ).subscribe((data) => {
+      if (data !== null) {
+        this.found = true;
+        this.board = data;
+      }
     });
   }
 
@@ -52,15 +68,15 @@ export class BoardComponent {
 
   getConnectedLists(listName: number): string[] {
     return this.board
-      .filter((list: { id: number; }) => list.id !== listName)
-      .map((list: { id: { toString: () => any; }; }) => list.id.toString());
+      .filter((list: { listId: number; }) => list.listId !== listName)
+      .map((list: { listId: { toString: () => string; }; }) => list.listId.toString());
   }
 
   addNewList(listName: string) {
     console.log('Adding new list:', listName);
     const newBoard: List = {
-      id: this.board.length + 1, // Id has to be added temporarily, we should probably generate a random hash or a number that won't be in our db
-      name: listName,
+      listId: this.board.length + 1, // Id has to be added temporarily, we should probably generate a random hash or a number that won't be in our db
+      listName: listName,
       tickets: []
     }
     this.board.push(newBoard);
@@ -78,16 +94,22 @@ export class BoardComponent {
 
   addNewTicket(ticket: AddTicket) {
     const { ticketTitle, listId } = ticket;
-    const list = this.board.find(list => list.id === listId);
+    const list = this.board.find(list => list.listId === listId);
 
     if (list) {
-      const newTicketId = list.tickets.length > 0 ? Math.max(...list.tickets.map(ticket => ticket.id)) + 1 : 1;
+      const newTicketId = list.tickets.length > 0 ? Math.max(...list.tickets.map(ticket => ticket.ticketId)) + 1 : 1;
 
-      const newTicket = {
-        id: newTicketId,
-        name: ticketTitle
+      const newTicket: Ticket = {
+        ticketId: newTicketId,
+        user: {
+          userId: -999,
+          userProfilePicture: "sdfjs"
+        },
+        ticketName: ticketTitle,
+        ticketDescription: "SDFsd",
+        ticketCreateDate: "today",
+        ticketDueDate: "now"
       };
-
       list.tickets.push(newTicket);
     } else {
       console.error(`List with ID ${listId} not found.`);

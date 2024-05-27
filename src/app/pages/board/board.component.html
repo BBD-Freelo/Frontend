@@ -1,25 +1,29 @@
 <div class="boards-container">
   @for (list of board; track list) {
     <div class="container">
-      <h2>{{ list.name }}</h2>
+      <h2>{{ list.listName }}</h2>
       <div
         cdkDropList
-        [id]=list.id.toString()
+        [id]=list.listId.toString()
         [cdkDropListData]="list.tickets"
-        [cdkDropListConnectedTo]="getConnectedLists(list.id)"
+        [cdkDropListConnectedTo]="getConnectedLists(list.listId)"
         class="list"
         (cdkDropListDropped)="drop($event)">
         @for (ticket of list.tickets; track ticket) {
           <app-ticket [ticket]="ticket"></app-ticket>
         }
-        <app-add-ticket [listId]="list.id" (newTicket)="addNewTicket($event)"></app-add-ticket>
+        <app-add-ticket [listId]="list.listId" (newTicket)="addNewTicket($event)"></app-add-ticket>
       </div>
     </div>
   }
-  <div class="container">
-    <h2>Add List</h2>
-    <div class="list">
-      <app-add-list (newList)="addNewList($event)"></app-add-list>
+  @if (found) {
+    <div class="container">
+      <h2>Add List</h2>
+      <div class="list">
+        <app-add-list (newList)="addNewList($event)"></app-add-list>
+      </div>
     </div>
-  </div>
+  } @else {
+    No Board found :(
+  }
 </div>

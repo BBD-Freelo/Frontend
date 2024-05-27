@@ -3,6 +3,8 @@ import {
   CdkDrag,
 } from '@angular/cdk/drag-drop';
 import { Ticket } from "../../interfaces/entities/ticket";
+// import { MatDialog } from "@angular/material/dialog";
+// import {DialogComponent} from "../dialog/dialog.component";
 
 @Component({
   selector: 'app-ticket',
@@ -13,4 +15,9 @@ import { Ticket } from "../../interfaces/entities/ticket";
 })
 export class ticketComponent {
   @Input({required: true}) ticket!: Ticket;
+
+  // constructor(private dialog: MatDialog) {}
+  //
+  openDialog() {
+  }
 }
