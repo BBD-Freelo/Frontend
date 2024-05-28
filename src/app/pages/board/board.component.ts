@@ -12,16 +12,16 @@ import { ApiService } from '../../services/api.service';
 import { List } from '../../interfaces/entities/list';
 import { Ticket } from '../../interfaces/entities/ticket';
 import { AddListComponent } from '../../components/add-list/add-list.component';
-import {AddTicketComponent} from "../../components/add-item/add-ticket.component";
-import {AddTicket} from "../../interfaces/components/addTicket";
-import {User} from "../../interfaces/entities/user";
+import { AddTicketComponent } from "../../components/add-item/add-ticket.component";
+import { AddTicket } from "../../interfaces/components/addTicket";
+import { User } from "../../interfaces/entities/user";
 import { HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
-import {MatSidenavModule} from '@angular/material/sidenav';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatList } from '@angular/material/list';
 import { MatListItem } from '@angular/material/list';
-import {MatButtonModule} from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { HeaderComponent } from '../../header/header.component';
 
@@ -33,99 +33,13 @@ import { HeaderComponent } from '../../header/header.component';
   styleUrl: './board.component.css'
 })
 export class BoardComponent {
-  boards: string[] = ["board1", "board2", "board3"];
-  board: List[] = new Array<List>(
-    {
-      listId: 1,
-      listName: "To Do",
-      tickets: [
-        {
-          ticketId: 1,
-          user: {
-            userId: 1,
-            userProfilePicture: "sdfjs"
-          },
-          ticketName: "Do this",
-          ticketDescription: "SDFsd",
-          ticketCreateDate: "today",
-          ticketDueDate: "now"
-        },
-        {
-          ticketId: 2,
-          user: {
-            userId: 1,
-            userProfilePicture: "sdfjs"
-          },
-          ticketName: "Do that",
-          ticketDescription: "SDFsd",
-          ticketCreateDate: "today",
-          ticketDueDate: "now"
-        }
-      ]
-    },
-    {
-      listId: 2,
-      listName: "In Progress",
-      tickets: [
-        {
-          ticketId: 3,
-          user: {
-            userId: 1,
-            userProfilePicture: "sdfjs"
-          },
-          ticketName: "Doing this",
-          ticketDescription: "SDFsd",
-          ticketCreateDate: "today",
-          ticketDueDate: "now"
-        },
-        {
-          ticketId: 4,
-          user: {
-            userId: 1,
-            userProfilePicture: "sdfjs"
-          },
-          ticketName: "Doing that",
-          ticketDescription: "SDFsd",
-          ticketCreateDate: "today",
-          ticketDueDate: "now"
-        }
-      ]
-    },
-    {
-      listId: 3,
-      listName: "Done",
-      tickets: [
-        {
-          ticketId: 5,
-          user: {
-            userId: 1,
-            userProfilePicture: "sdfjs"
-          },
-          ticketName: "Done this",
-          ticketDescription: "SDFsd",
-          ticketCreateDate: "today",
-          ticketDueDate: "now"
-        },
-        {
-          ticketId: 6,
-          user: {
-            userId: 1,
-            userProfilePicture: "sdfjs"
-          },
-          ticketName: "Done that",
-          ticketDescription: "SDFsd",
-          ticketCreateDate: "today",
-          ticketDueDate: "now"
-        }
-      ]
-    }
-  );
+  board!: Board;
   currentBoard!: string;
   found = true;
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) {
     this.route.params.subscribe( params => this.currentBoard = params["board"] );
-    this.apiService.get<List[]>(`/board/${this.currentBoard}`).pipe(
+    this.apiService.get<Board>(`/board/${this.currentBoard}`).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 404) {
           return of(null);
@@ -159,7 +73,7 @@ export class BoardComponent {
   }
 
   getConnectedLists(listName: number): string[] {
-    return this.board
+    return this.board.lists
       .filter((list: { listId: number; }) => list.listId !== listName)
       .map((list: { listId: { toString: () => string; }; }) => list.listId.toString());
   }
@@ -167,11 +81,11 @@ export class BoardComponent {
   addNewList(listName: string) {
     console.log('Adding new list:', listName);
     const newBoard: List = {
-      listId: this.board.length + 1, // Id has to be added temporarily, we should probably generate a random hash or a number that won't be in our db
+      listId: this.board.lists.length + 1, // Id has to be added temporarily, we should probably generate a random hash or a number that won't be in our db
       listName: listName,
       tickets: []
     }
-    this.board.push(newBoard);
+    this.board.lists.push(newBoard);
 
     // Once we have made lets get the id of "newBoard" delete it from the list and add the value returned by the api call
     // Maybe we just need to return the id of the new list?
@@ -186,7 +100,7 @@ export class BoardComponent {
 
   addNewTicket(ticket: AddTicket) {
     const { ticketTitle, listId } = ticket;
-    const list = this.board.find(list => list.listId === listId);
+    const list = this.board.lists.find(list => list.listId === listId);
 
     if (list) {
       const newTicketId = list.tickets.length > 0 ? Math.max(...list.tickets.map(ticket => ticket.ticketId)) + 1 : 1;
@@ -197,6 +111,7 @@ export class BoardComponent {
           userId: -999,
           userProfilePicture: "sdfjs"
         },
+        assignedUser: null,
         ticketName: ticketTitle,
         ticketDescription: "SDFsd",
         ticketCreateDate: "today",
