@@ -18,6 +18,7 @@ import {User} from "../../interfaces/entities/user";
 import { HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import {Board} from "../../interfaces/entities/board";
 
 @Component({
   selector: 'app-board',
@@ -27,13 +28,13 @@ import { of } from 'rxjs';
   styleUrl: './board.component.css'
 })
 export class BoardComponent {
-  board!: List[];
+  board!: Board;
   currentBoard!: string;
   found = false;
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) {
     this.route.params.subscribe( params => this.currentBoard = params["board"] );
-    this.apiService.get<List[]>(`/board/${this.currentBoard}`).pipe(
+    this.apiService.get<Board>(`/board/${this.currentBoard}`).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 404) {
           return of(null);
@@ -67,7 +68,7 @@ export class BoardComponent {
   }
 
   getConnectedLists(listName: number): string[] {
-    return this.board
+    return this.board.lists
       .filter((list: { listId: number; }) => list.listId !== listName)
       .map((list: { listId: { toString: () => string; }; }) => list.listId.toString());
   }
@@ -75,11 +76,11 @@ export class BoardComponent {
   addNewList(listName: string) {
     console.log('Adding new list:', listName);
     const newBoard: List = {
-      listId: this.board.length + 1, // Id has to be added temporarily, we should probably generate a random hash or a number that won't be in our db
+      listId: this.board.lists.length + 1, // Id has to be added temporarily, we should probably generate a random hash or a number that won't be in our db
       listName: listName,
       tickets: []
     }
-    this.board.push(newBoard);
+    this.board.lists.push(newBoard);
 
     // Once we have made lets get the id of "newBoard" delete it from the list and add the value returned by the api call
     // Maybe we just need to return the id of the new list?
@@ -94,7 +95,7 @@ export class BoardComponent {
 
   addNewTicket(ticket: AddTicket) {
     const { ticketTitle, listId } = ticket;
-    const list = this.board.find(list => list.listId === listId);
+    const list = this.board.lists.find(list => list.listId === listId);
 
     if (list) {
       const newTicketId = list.tickets.length > 0 ? Math.max(...list.tickets.map(ticket => ticket.ticketId)) + 1 : 1;
@@ -105,6 +106,7 @@ export class BoardComponent {
           userId: -999,
           userProfilePicture: "sdfjs"
         },
+        assignedUser: null,
         ticketName: ticketTitle,
         ticketDescription: "SDFsd",
         ticketCreateDate: "today",
