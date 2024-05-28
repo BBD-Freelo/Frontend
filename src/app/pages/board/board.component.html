@@ -6,7 +6,7 @@
           @for (board of boards; track board) {
             <h4 mat-line>{{ board }}</h4>
           }
-          <button mat-flat-button color="primary" class="navbutton">
+          <button mat-flat-button color="accent" class="navbutton">
             <mat-icon>add</mat-icon>
             Add Board
           </button>
@@ -14,7 +14,7 @@
     </mat-sidenav>
     <mat-sidenav-content id="maincontent">
       @for (list of board.lists; track list) {
-        <div class="container">
+        <div class="list-container">
           <div>
             <h2>{{ list.listName }}</h2>
             <div
@@ -33,7 +33,7 @@
         </div>
       }
       @if (found) {
-        <div class="list">
+        <div class="addlist-container">
           <h2>Add List</h2>
           <app-add-list (newList)="addNewList($event)"></app-add-list>
         </div>
