@@ -9,7 +9,6 @@ import {
 import { ticketComponent } from '../../components/ticket/ticket.component';
 import { ActivatedRoute } from "@angular/router";
 import { ApiService } from '../../services/api.service';
-import { List } from '../../interfaces/entities/list';
 import { Ticket } from '../../interfaces/entities/ticket';
 import { AddListComponent } from '../../components/add-list/add-list.component';
 import { AddTicketComponent } from "../../components/add-item/add-ticket.component";
@@ -19,29 +18,53 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatList } from '@angular/material/list';
-import { MatListItem } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { HeaderComponent } from '../../components/header/header.component';
 import { Board } from '../../interfaces/entities/board';
+import { Router } from '@angular/router';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { NavbarComponent  } from '../../components/navbar/navbar.component';
 
 @Component({
   selector: 'app-board',
   standalone: true,
-  imports: [CdkDropList, CdkDrag, ticketComponent, AddListComponent, HeaderComponent, AddTicketComponent, MatSidenavModule, MatList, MatListItem, MatButtonModule, MatIcon],
+  imports: [
+    CdkDropList, 
+    CdkDrag, 
+    ticketComponent, 
+    NavbarComponent,
+    AddListComponent, 
+    MatProgressSpinner, 
+    HeaderComponent, 
+    AddTicketComponent, 
+    MatSidenavModule, 
+    MatButtonModule, 
+    MatIcon],
   templateUrl: './board.component.html',
   styleUrl: './board.component.css'
 })
 export class BoardComponent {
   board!: Board;
-  currentBoard!: string;
-  boards: Board[] = [];
+  currentBoard!: number;
   found = false;
+  loading = true;
 
-  constructor(private route: ActivatedRoute, private apiService: ApiService) {
+  constructor(private route: ActivatedRoute, private apiService: ApiService, private router: Router) {
     this.route.params.subscribe( params => this.currentBoard = params["board"] );
-    this.apiService.get<Board >(`/board/${this.currentBoard}`).pipe(
+
+    this.loadBoard(this.currentBoard);
+  }
+
+  // This still needs to be implemented
+  // This should add a new list to the board.lists array
+  // The list should come from the AddListComponent after it is returned form the post
+  addNewList(){
+
+  }
+
+  loadBoard(boardId: number) {
+    this.apiService.get<Board >(`/board/${boardId}`).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 404) {
           return of(null);
@@ -52,6 +75,7 @@ export class BoardComponent {
     ).subscribe((data) => {
       if (data !== null) {
         this.found = true;
+        this.loading = false;
         this.board = data;
       }
     });
@@ -78,26 +102,6 @@ export class BoardComponent {
     return this.board.lists
       .filter((list: { listId: number; }) => list.listId !== listName)
       .map((list: { listId: { toString: () => string; }; }) => list.listId.toString());
-  }
-
-  addNewList(listName: string) {
-    console.log('Adding new list:', listName);
-    const newBoard: List = {
-      listId: this.board.lists.length + 1, // Id has to be added temporarily, we should probably generate a random hash or a number that won't be in our db
-      listName: listName,
-      tickets: []
-    }
-    this.board.lists.push(newBoard);
-
-    // Once we have made lets get the id of "newBoard" delete it from the list and add the value returned by the api call
-    // Maybe we just need to return the id of the new list?
-    // so
-    // this.apiService.post<List>('/board', newBoard).subscribe((data) => {
-    //  this.board = this.board.filter((list) => list.id !== newBoard.id);
-    //  this.board.push(data);
-    // This could potentially be as simple ass returning the boards id then replacing it
-    // })
-
   }
 
   addNewTicket(ticket: AddTicket) {

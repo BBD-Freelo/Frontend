@@ -2,17 +2,14 @@
   <app-header></app-header>
   <mat-sidenav-container id="navcontainer">
     <mat-sidenav mode="side" opened class="sidenav">
-        <div class="nav">
-          @for (board of boards; track board) {
-            <h4 mat-line>{{ board }}</h4>
-          }
-          <button mat-flat-button color="accent" class="navbutton">
-            <mat-icon>add</mat-icon>
-            Add Board
-          </button>
-        </div>
+        <app-navbar></app-navbar>
     </mat-sidenav>
     <mat-sidenav-content id="maincontent">
+      @if (loading) {
+        <div class="loader">
+          <mat-spinner color="accent"></mat-spinner>
+        </div>
+      }
       @for (list of board?.lists; track list) {
         <div class="list-container">
           <div>
@@ -35,7 +32,7 @@
       @if (found) {
         <div class="addlist-container">
           <h2>Add List</h2>
-          <app-add-list (newList)="addNewList($event)"></app-add-list>
+          <app-add-list [boardId]="this.currentBoard" [reloadCallback]="addNewList" ></app-add-list>
         </div>
       } @else {
         No Board found :(
