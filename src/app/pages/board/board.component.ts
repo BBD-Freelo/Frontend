@@ -18,18 +18,110 @@ import {User} from "../../interfaces/entities/user";
 import { HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import { MatList } from '@angular/material/list';
+import { MatListItem } from '@angular/material/list';
+import {MatButtonModule} from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { HeaderComponent } from '../../header/header.component';
 
 @Component({
   selector: 'app-board',
   standalone: true,
-  imports: [CdkDropList, CdkDrag, ticketComponent, AddListComponent, AddTicketComponent],
+  imports: [CdkDropList, CdkDrag, ticketComponent, AddListComponent, HeaderComponent, AddTicketComponent, MatSidenavModule, MatList, MatListItem, MatButtonModule, MatIcon],
   templateUrl: './board.component.html',
   styleUrl: './board.component.css'
 })
 export class BoardComponent {
-  board!: List[];
+  boards: string[] = ["board1", "board2", "board3"];
+  board: List[] = new Array<List>(
+    {
+      listId: 1,
+      listName: "To Do",
+      tickets: [
+        {
+          ticketId: 1,
+          user: {
+            userId: 1,
+            userProfilePicture: "sdfjs"
+          },
+          ticketName: "Do this",
+          ticketDescription: "SDFsd",
+          ticketCreateDate: "today",
+          ticketDueDate: "now"
+        },
+        {
+          ticketId: 2,
+          user: {
+            userId: 1,
+            userProfilePicture: "sdfjs"
+          },
+          ticketName: "Do that",
+          ticketDescription: "SDFsd",
+          ticketCreateDate: "today",
+          ticketDueDate: "now"
+        }
+      ]
+    },
+    {
+      listId: 2,
+      listName: "In Progress",
+      tickets: [
+        {
+          ticketId: 3,
+          user: {
+            userId: 1,
+            userProfilePicture: "sdfjs"
+          },
+          ticketName: "Doing this",
+          ticketDescription: "SDFsd",
+          ticketCreateDate: "today",
+          ticketDueDate: "now"
+        },
+        {
+          ticketId: 4,
+          user: {
+            userId: 1,
+            userProfilePicture: "sdfjs"
+          },
+          ticketName: "Doing that",
+          ticketDescription: "SDFsd",
+          ticketCreateDate: "today",
+          ticketDueDate: "now"
+        }
+      ]
+    },
+    {
+      listId: 3,
+      listName: "Done",
+      tickets: [
+        {
+          ticketId: 5,
+          user: {
+            userId: 1,
+            userProfilePicture: "sdfjs"
+          },
+          ticketName: "Done this",
+          ticketDescription: "SDFsd",
+          ticketCreateDate: "today",
+          ticketDueDate: "now"
+        },
+        {
+          ticketId: 6,
+          user: {
+            userId: 1,
+            userProfilePicture: "sdfjs"
+          },
+          ticketName: "Done that",
+          ticketDescription: "SDFsd",
+          ticketCreateDate: "today",
+          ticketDueDate: "now"
+        }
+      ]
+    }
+  );
   currentBoard!: string;
-  found = false;
+  found = true;
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) {
     this.route.params.subscribe( params => this.currentBoard = params["board"] );

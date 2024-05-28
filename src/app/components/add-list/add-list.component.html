@@ -1,4 +1,6 @@
 <div class="add-list">
   <input type="text" [(ngModel)]="listName" placeholder="Enter list name" />
-  <button (click)="addList()">Add List</button>
+  <button mat-fab color="primary" (click)="addList()" >
+    <mat-icon>add</mat-icon>
+  </button>
 </div>

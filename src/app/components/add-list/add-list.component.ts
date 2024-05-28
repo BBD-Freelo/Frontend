@@ -1,11 +1,13 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from "@angular/forms";
+import { MatIcon } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-add-list',
   standalone: true,
   imports: [
-    FormsModule
+    FormsModule, MatIcon, MatButtonModule
   ],
   templateUrl: './add-list.component.html',
   styleUrl: './add-list.component.css'
