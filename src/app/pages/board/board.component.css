@@ -6,17 +6,27 @@
   height: 100%;
 }
 
-.container {
+.list-container {
+  padding: 1em;
   min-width: 300px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  border-right: 2px dashed rgba(0, 0, 0, 0.156);
 }
 
-.list {
+.addlist-container {
   min-width: 300px;
   display: flex;
   flex-direction: column;
+  margin: 1em;
+}
+
+.list {
+  min-height: 60px;
+  background: rgba(0, 0, 0, 0.156);
+  display: block;
+  max-height: 100%;
 }
 
 .cdk-drag-preview {
@@ -58,6 +68,5 @@
 
 #maincontent{
   display: flex;
-  gap: 2em;
-  padding: 3em;
+  background-color: #E4DAE2;
 }

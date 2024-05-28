@@ -23,7 +23,7 @@ import { MatList } from '@angular/material/list';
 import { MatListItem } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { HeaderComponent } from '../../header/header.component';
+import { HeaderComponent } from '../../components/header/header.component';
 import { Board } from '../../interfaces/entities/board';
 
 @Component({
