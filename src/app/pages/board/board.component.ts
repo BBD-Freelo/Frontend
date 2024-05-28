@@ -24,6 +24,7 @@ import { MatListItem } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { HeaderComponent } from '../../header/header.component';
+import { Board } from '../../interfaces/entities/board';
 
 @Component({
   selector: 'app-board',
@@ -35,11 +36,12 @@ import { HeaderComponent } from '../../header/header.component';
 export class BoardComponent {
   board!: Board;
   currentBoard!: string;
-  found = true;
+  boards: Board[] = [];
+  found = false;
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) {
     this.route.params.subscribe( params => this.currentBoard = params["board"] );
-    this.apiService.get<Board>(`/board/${this.currentBoard}`).pipe(
+    this.apiService.get<Board >(`/board/${this.currentBoard}`).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 404) {
           return of(null);
