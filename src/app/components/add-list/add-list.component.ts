@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { addList } from '../../interfaces/entities/addList';
 import { ApiService } from '../../services/api.service';
 import { List } from '../../interfaces/entities/list';
+import {AddListResponse} from "../../interfaces/Responses/addList";
 
 @Component({
   selector: 'app-add-list',
@@ -16,21 +17,20 @@ import { List } from '../../interfaces/entities/list';
   styleUrl: './add-list.component.css'
 })
 export class AddListComponent {
-  @Output() newList = new EventEmitter<string>();
+  @Output() newList = new EventEmitter<AddListResponse>();
   @Input({required: true}) boardId!: number;
-  @Input({required: true}) reloadCallback!: Function;
   listName: string = '';
 
   constructor(private apiService: ApiService) {}
 
   addNewList() {
-    console.log('Adding new list:', this.listName);
+    this.listName = '';
     const newBoard: addList = {
       listName: this.listName,
       boardId: this.boardId
     }
-    this.apiService.post<List,unknown>('/list/new', newBoard).subscribe((item) => {
-      this.reloadCallback(item);
+    this.apiService.post<AddListResponse,addList>('/list/new', newBoard).subscribe((item) => {
+      this.newList.emit(item);
     });
   }
 }

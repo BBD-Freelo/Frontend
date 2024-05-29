@@ -25,6 +25,7 @@ import { Board } from '../../interfaces/entities/board';
 import { Router } from '@angular/router';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NavbarComponent  } from '../../components/navbar/navbar.component';
+import {AddListResponse} from "../../interfaces/Responses/addList";
 
 @Component({
   selector: 'app-board',
@@ -123,5 +124,13 @@ export class BoardComponent {
     } else {
       console.error(`List with ID ${listId} not found.`);
     }
+  }
+
+  handleNewList(event: AddListResponse) {
+    this.board.lists.push({
+      listId: event.listId,
+      listName: event.listName,
+      tickets: []
+    })
   }
 }

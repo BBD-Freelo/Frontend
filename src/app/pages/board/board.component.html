@@ -35,7 +35,7 @@
       @if (found) {
         <div class="addlist-container">
           <h2>Add List</h2>
-          <app-add-list [boardId]="this.currentBoard" [reloadCallback]="addNewList" ></app-add-list>
+          <app-add-list [boardId]="this.currentBoard" (newList)="handleNewList($event)"></app-add-list>
         </div>
       }
       @if (error) {
