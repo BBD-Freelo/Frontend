@@ -30,16 +30,16 @@ import { NavbarComponent  } from '../../components/navbar/navbar.component';
   selector: 'app-board',
   standalone: true,
   imports: [
-    CdkDropList, 
-    CdkDrag, 
-    ticketComponent, 
+    CdkDropList,
+    CdkDrag,
+    ticketComponent,
     NavbarComponent,
-    AddListComponent, 
-    MatProgressSpinner, 
-    HeaderComponent, 
-    AddTicketComponent, 
-    MatSidenavModule, 
-    MatButtonModule, 
+    AddListComponent,
+    MatProgressSpinner,
+    HeaderComponent,
+    AddTicketComponent,
+    MatSidenavModule,
+    MatButtonModule,
     MatIcon],
   templateUrl: './board.component.html',
   styleUrl: './board.component.css'
@@ -48,7 +48,7 @@ export class BoardComponent {
   board!: Board;
   currentBoard!: number;
   found = false;
-  loading = true;
+  error = false;
 
   constructor(private route: ActivatedRoute, private apiService: ApiService, private router: Router) {
     this.route.params.subscribe( params => this.currentBoard = params["board"] );
@@ -66,16 +66,12 @@ export class BoardComponent {
   loadBoard(boardId: number) {
     this.apiService.get<Board >(`/board/${boardId}`).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.status === 404) {
-          return of(null);
-        } else {
-          return of(null);
-        }
+        this.error = true;
+        return of(null);
       })
     ).subscribe((data) => {
       if (data !== null) {
         this.found = true;
-        this.loading = false;
         this.board = data;
       }
     });
