@@ -1,17 +1,9 @@
-.add-list {
-  display: flex;
-  gap: 1em;
+.form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
 }
 
-.add-list input {
-  flex: 1;
-  font-size: 16px;
-  border-radius: 10px;
-  border-width: 1px;
-}
-
-.add-list button {
-  font-size: 16px;
-  width: 2em;
-  height: 2em;
+.full-width {
+  width: 100%;
 }

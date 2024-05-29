@@ -1,16 +1,9 @@
-.add-item {
-  display: flex;
-  gap: 10px;
+.form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
 }
 
-.add-item input {
-  flex: 1;
-  font-size: 16px;
-  border-radius: 10px;
-  border-width: 1px;
-}
-
-.add-item button {
-  height: 3em;
-  width: 3em;
+.full-width {
+  width: 100%;
 }

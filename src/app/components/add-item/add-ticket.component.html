@@ -1,6 +1,18 @@
 <div class="add-item">
-  <input type="text" [(ngModel)]="ticketTitle" placeholder="Enter ticket title" />
-  <button mat-fab color="accent" (click)="addItem()" >
-    <mat-icon>add</mat-icon>
-  </button>
+  <form (ngSubmit)="addNewTicket()" class="form">
+    <mat-form-field class="full-width" color="accent">
+      <mat-label>New Ticket</mat-label>
+      <input type="text" matInput [formControl]="valueFormControl" placeholder="Ex. Dinner">
+      <mat-icon matSuffix color="accent">add_circle</mat-icon>
+      @if (valueFormControl.hasError('required')) {
+        <mat-error>Please enter a ticket name</mat-error>
+      }
+      @if (valueFormControl.hasError('maxlength') || valueFormControl.hasError('minlength')) {
+        <mat-error>Please enter a value between 1 and 20 characters</mat-error>
+      }
+      @if (valueFormControl.hasError('pattern')) {
+        <mat-error>Please only enter a-z or 1-9</mat-error>
+      }
+    </mat-form-field>
+  </form>
 </div>
