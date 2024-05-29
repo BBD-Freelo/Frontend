@@ -12,8 +12,6 @@ import { ApiService } from '../../services/api.service';
 import { Ticket } from '../../interfaces/entities/ticket';
 import { AddListComponent } from '../../components/add-list/add-list.component';
 import { AddTicketComponent } from "../../components/add-item/add-ticket.component";
-import { AddTicket } from "../../interfaces/components/addTicket";
-import { User } from "../../interfaces/entities/user";
 import { HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -26,6 +24,9 @@ import { Router } from '@angular/router';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NavbarComponent  } from '../../components/navbar/navbar.component';
 import {AddListResponse} from "../../interfaces/Responses/addList";
+import {AddTicketResponse} from "../../interfaces/Responses/addTicket";
+import {MoveTicketRequest} from "../../interfaces/Requests/moveTicket";
+import {SuccesResponse} from "../../interfaces/Responses/success";
 
 @Component({
   selector: 'app-board',
@@ -57,13 +58,6 @@ export class BoardComponent {
     this.loadBoard(this.currentBoard);
   }
 
-  // This still needs to be implemented
-  // This should add a new list to the board.lists array
-  // The list should come from the AddListComponent after it is returned form the post
-  addNewList(){
-
-  }
-
   loadBoard(boardId: number) {
     this.apiService.get<Board >(`/board/${boardId}`).pipe(
       catchError((error: HttpErrorResponse) => {
@@ -80,18 +74,31 @@ export class BoardComponent {
 
   drop(event: CdkDragDrop<Ticket[]>) {
     if (event.previousContainer === event.container) {
-      console.log(event.container.data[event.previousIndex]);
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      console.log(event.previousContainer.data[event.previousIndex]);
-      console.log('Current List ID:', event.container.id);
-      console.log('Previous List ID:', event.previousContainer.id);
+      // console.log(event.previousContainer.data[event.previousIndex]);
+      // console.log('Current List ID:', event.container.id);
+      // console.log('Previous List ID:', event.previousContainer.id);
+      const req: MoveTicketRequest = {
+        moveToListId: Number(event.container.id),
+        ticketId: event.previousContainer.data[event.previousIndex].ticketId
+      }
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex,
-      );
+      )
+      this.apiService.patch<SuccesResponse, MoveTicketRequest>('/ticket/move', req).subscribe((data) => {
+        if (data.code !== 200) {
+          transferArrayItem(
+            event.container.data,
+            event.previousContainer.data,
+            event.currentIndex,
+            event.previousIndex,
+          )
+        }
+      });
     }
   }
 
@@ -101,28 +108,26 @@ export class BoardComponent {
       .map((list: { listId: { toString: () => string; }; }) => list.listId.toString());
   }
 
-  addNewTicket(ticket: AddTicket) {
-    const { ticketTitle, listId } = ticket;
-    const list = this.board.lists.find(list => list.listId === listId);
+  addNewTicket(ticket: AddTicketResponse) {
+    const list = this.board.lists.find(list => list.listId === ticket.listId);
 
     if (list) {
-      const newTicketId = list.tickets.length > 0 ? Math.max(...list.tickets.map(ticket => ticket.ticketId)) + 1 : 1;
 
       const newTicket: Ticket = {
-        ticketId: newTicketId,
+        ticketId: ticket.ticketId,
         user: {
-          userId: -999,
+          userId: 3,  // grab current user id
           userProfilePicture: "sdfjs"
         },
         assignedUser: null,
-        ticketName: ticketTitle,
-        ticketDescription: "SDFsd",
-        ticketCreateDate: "today",
-        ticketDueDate: "now"
+        ticketName: ticket.ticketName,
+        ticketDescription: ticket.ticketDescription,
+        ticketCreateDate: ticket.ticketCreateDate,
+        ticketDueDate: "",
       };
       list.tickets.push(newTicket);
     } else {
-      console.error(`List with ID ${listId} not found.`);
+      console.error(`List with ID ${ticket.listId} not found.`);
     }
   }
 

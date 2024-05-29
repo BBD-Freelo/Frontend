@@ -3,6 +3,8 @@ import { AddTicket } from "../../interfaces/components/addTicket";
 import {FormsModule} from "@angular/forms";
 import {MatButtonModule} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
+import {AddTicketResponse} from "../../interfaces/Responses/addTicket";
+import {ApiService} from "../../services/api.service";
 
 @Component({
   selector: 'app-add-ticket',
@@ -14,17 +16,20 @@ import {MatIcon} from '@angular/material/icon';
   styleUrl: './add-ticket.component.css'
 })
 export class AddTicketComponent {
-  @Output() newTicket = new EventEmitter<AddTicket>();
+  @Output() newTicket = new EventEmitter<AddTicketResponse>();
   @Input({required: true}) listId!: number;
   ticketTitle: string = '';
 
+  constructor(private apiService: ApiService) {}
+
   addItem() {
-    if (this.ticketTitle.trim()) {
-      this.newTicket.emit({
-        ticketTitle: this.ticketTitle,
-        listId: this.listId
-      });
-      this.ticketTitle = '';
+    const newTicket: AddTicket = {
+      ticketName: this.ticketTitle,
+      listId: this.listId
     }
+    this.ticketTitle = '';
+    this.apiService.post<AddTicketResponse, AddTicket>('/ticket/add', newTicket).subscribe((ticket) => {
+      this.newTicket.emit(ticket);
+    });
   }
 }

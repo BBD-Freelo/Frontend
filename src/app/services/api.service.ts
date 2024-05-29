@@ -26,4 +26,8 @@ export class ApiService {
     return this.http.delete<Response>(`${environment.api_url}${url}`);
   }
 
+  patch<Response, Request>(url: string, body: Request): Observable<Response> {
+    return this.http.patch<Response>(`${environment.api_url}${url}`, body);
+  }
+
 }
