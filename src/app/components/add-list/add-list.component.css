@@ -1,17 +1,17 @@
 .add-list {
   display: flex;
-  align-items: center;
-  margin-bottom: 10px;
+  gap: 1em;
 }
 
 .add-list input {
   flex: 1;
-  padding: 5px;
   font-size: 16px;
+  border-radius: 10px;
+  border-width: 1px;
 }
 
 .add-list button {
-  margin-left: 10px;
-  padding: 5px 10px;
   font-size: 16px;
+  width: 2em;
+  height: 2em;
 }
