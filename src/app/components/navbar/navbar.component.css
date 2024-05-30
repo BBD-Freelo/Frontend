@@ -1,16 +1,26 @@
 .nav{
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
 }
 
 .navbutton {
     position: absolute;
     bottom: 2em;
+    align-self: center;
     width: 80%;
 }
 
+.link{
+    margin: 1em;
+}
 .link:hover{
     cursor: pointer;
   }
+
+.nav-item{
+    min-height: 4em;
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+}
