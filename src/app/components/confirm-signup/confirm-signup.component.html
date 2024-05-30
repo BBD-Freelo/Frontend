@@ -1,0 +1,7 @@
+<form (ngSubmit)="onSubmit(confirmForm)" #confirmForm="ngForm">
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" ngModel required />
+    <label for="code">Confirmation Code:</label>
+    <input type="text" id="code" name="code" ngModel required />
+    <button type="submit">Confirm Sign Up</button>
+</form>
