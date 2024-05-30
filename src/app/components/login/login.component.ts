@@ -25,6 +25,7 @@ export class LoginComponent {
         username: this.email,
         password: this.password
       });
+      console.log("Login successful");
     } catch (err) {
       console.log("Error signing In : ", err);
     }
