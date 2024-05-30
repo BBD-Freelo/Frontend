@@ -20,13 +20,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { HeaderComponent } from '../../components/header/header.component';
 import { Board } from '../../interfaces/entities/board';
-import { Router } from '@angular/router';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NavbarComponent  } from '../../components/navbar/navbar.component';
 import {AddListResponse} from "../../interfaces/Responses/addList";
 import {AddTicketResponse} from "../../interfaces/Responses/addTicket";
 import {MoveTicketRequest} from "../../interfaces/Requests/moveTicket";
 import {SuccesResponse} from "../../interfaces/Responses/success";
+import { List } from '../../interfaces/entities/list';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteDialogComponent } from '../../components/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-board',
@@ -52,7 +54,7 @@ export class BoardComponent {
   found = false;
   error = false;
 
-  constructor(private route: ActivatedRoute, private apiService: ApiService, private router: Router) {
+  constructor(private route: ActivatedRoute, private apiService: ApiService, public dialog: MatDialog) {
     this.route.params.subscribe( params => this.currentBoard = params["board"] );
 
     this.loadBoard(this.currentBoard);
@@ -129,6 +131,20 @@ export class BoardComponent {
     } else {
       console.error(`List with ID ${ticket.listId} not found.`);
     }
+  }
+
+  openDeleteDialog(list: List): void {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      data: {name: list.listName, id: list.listId},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // this.apiService.delete(`/list/${list.listId}`).subscribe(() => {
+        //   this.board.lists = this.board.lists.filter((l) => l.listId !== list.listId);
+        // });
+      }
+    });
   }
 
   handleNewList(event: AddListResponse) {

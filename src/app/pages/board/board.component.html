@@ -7,9 +7,14 @@
     <mat-sidenav-content id="maincontent">
       @defer (when found) {
         @for (list of board?.lists; track list) {
-          <div class="list-container">
-            <div>
+          <div class="list-column">
+            <div class="list-header">
               <h2>{{ list.listName }}</h2>
+              <button (click)="openDeleteDialog(list)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+            <div class="list-container">
               <div
                 cdkDropList
                 [id]=list.listId.toString()
