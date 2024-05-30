@@ -1,0 +1,29 @@
+.ticket-body{
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    margin: 10px;
+}
+
+.ticket-row{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3em;
+}
+
+.icon-label{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+}
+
+.full-width {
+    width: 100%;
+  }
+
+.save-button{
+    justify-self: flex-end;
+}

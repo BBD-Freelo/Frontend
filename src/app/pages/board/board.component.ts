@@ -118,14 +118,15 @@ export class BoardComponent {
       const newTicket: Ticket = {
         ticketId: ticket.ticketId,
         user: {
-          userId: 3,  // grab current user id
+          userId: 3,
           userProfilePicture: "sdfjs"
         },
         assignedUser: null,
         ticketName: ticket.ticketName,
         ticketDescription: ticket.ticketDescription,
         ticketCreateDate: ticket.ticketCreateDate,
-        ticketDueDate: "",
+        ticketUpdateDate: ticket.ticketUpdateDate,
+        ticketDueDate: ticket.ticketDueDate
       };
       list.tickets.push(newTicket);
     } else {
