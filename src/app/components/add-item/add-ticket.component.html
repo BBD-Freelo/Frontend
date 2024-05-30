@@ -1,4 +1,6 @@
 <div class="add-item">
   <input type="text" [(ngModel)]="ticketTitle" placeholder="Enter ticket title" />
-  <button (click)="addItem()">Add Ticket</button>
+  <button mat-fab color="accent" (click)="addItem()" >
+    <mat-icon>add</mat-icon>
+  </button>
 </div>

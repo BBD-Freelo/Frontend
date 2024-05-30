@@ -1,0 +1,9 @@
+<div class="nav">
+    @for (board of boards; track board) {
+        <h4 mat-line (click)="navigateToBoard(board.boardId)" class="link">{{ board.boardName }}</h4>
+    }
+    <button mat-flat-button color="accent" class="navbutton">
+        <mat-icon>add</mat-icon>
+        Add Board
+    </button>
+</div>

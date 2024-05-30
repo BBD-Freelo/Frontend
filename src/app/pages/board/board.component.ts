@@ -9,38 +9,60 @@ import {
 import { ticketComponent } from '../../components/ticket/ticket.component';
 import { ActivatedRoute } from "@angular/router";
 import { ApiService } from '../../services/api.service';
-import { List } from '../../interfaces/entities/list';
 import { Ticket } from '../../interfaces/entities/ticket';
 import { AddListComponent } from '../../components/add-list/add-list.component';
-import {AddTicketComponent} from "../../components/add-item/add-ticket.component";
-import {AddTicket} from "../../interfaces/components/addTicket";
-import {User} from "../../interfaces/entities/user";
+import { AddTicketComponent } from "../../components/add-item/add-ticket.component";
 import { HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
-import {Board} from "../../interfaces/entities/board";
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { HeaderComponent } from '../../components/header/header.component';
+import { Board } from '../../interfaces/entities/board';
+import { Router } from '@angular/router';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { NavbarComponent  } from '../../components/navbar/navbar.component';
+import {AddListResponse} from "../../interfaces/Responses/addList";
+import {AddTicketResponse} from "../../interfaces/Responses/addTicket";
+import {MoveTicketRequest} from "../../interfaces/Requests/moveTicket";
+import {SuccesResponse} from "../../interfaces/Responses/success";
 
 @Component({
   selector: 'app-board',
   standalone: true,
-  imports: [CdkDropList, CdkDrag, ticketComponent, AddListComponent, AddTicketComponent],
+  imports: [
+    CdkDropList,
+    CdkDrag,
+    ticketComponent,
+    NavbarComponent,
+    AddListComponent,
+    MatProgressSpinner,
+    HeaderComponent,
+    AddTicketComponent,
+    MatSidenavModule,
+    MatButtonModule,
+    MatIcon],
   templateUrl: './board.component.html',
   styleUrl: './board.component.css'
 })
 export class BoardComponent {
   board!: Board;
-  currentBoard!: string;
+  currentBoard!: number;
   found = false;
+  error = false;
 
-  constructor(private route: ActivatedRoute, private apiService: ApiService) {
+  constructor(private route: ActivatedRoute, private apiService: ApiService, private router: Router) {
     this.route.params.subscribe( params => this.currentBoard = params["board"] );
-    this.apiService.get<Board>(`/board/${this.currentBoard}`).pipe(
+
+    this.loadBoard(this.currentBoard);
+  }
+
+  loadBoard(boardId: number) {
+    this.apiService.get<Board >(`/board/${boardId}`).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.status === 404) {
-          return of(null);
-        } else {
-          return of(null);
-        }
+        this.error = true;
+        return of(null);
       })
     ).subscribe((data) => {
       if (data !== null) {
@@ -52,18 +74,31 @@ export class BoardComponent {
 
   drop(event: CdkDragDrop<Ticket[]>) {
     if (event.previousContainer === event.container) {
-      console.log(event.container.data[event.previousIndex]);
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      console.log(event.previousContainer.data[event.previousIndex]);
-      console.log('Current List ID:', event.container.id);
-      console.log('Previous List ID:', event.previousContainer.id);
+      // console.log(event.previousContainer.data[event.previousIndex]);
+      // console.log('Current List ID:', event.container.id);
+      // console.log('Previous List ID:', event.previousContainer.id);
+      const req: MoveTicketRequest = {
+        moveToListId: Number(event.container.id),
+        ticketId: event.previousContainer.data[event.previousIndex].ticketId
+      }
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex,
-      );
+      )
+      this.apiService.patch<SuccesResponse, MoveTicketRequest>('/ticket/move', req).subscribe((data) => {
+        if (data.code !== 200) {
+          transferArrayItem(
+            event.container.data,
+            event.previousContainer.data,
+            event.currentIndex,
+            event.previousIndex,
+          )
+        }
+      });
     }
   }
 
@@ -73,48 +108,34 @@ export class BoardComponent {
       .map((list: { listId: { toString: () => string; }; }) => list.listId.toString());
   }
 
-  addNewList(listName: string) {
-    console.log('Adding new list:', listName);
-    const newBoard: List = {
-      listId: this.board.lists.length + 1, // Id has to be added temporarily, we should probably generate a random hash or a number that won't be in our db
-      listName: listName,
-      tickets: []
-    }
-    this.board.lists.push(newBoard);
-
-    // Once we have made lets get the id of "newBoard" delete it from the list and add the value returned by the api call
-    // Maybe we just need to return the id of the new list?
-    // so
-    // this.apiService.post<List>('/board', newBoard).subscribe((data) => {
-    //  this.board = this.board.filter((list) => list.id !== newBoard.id);
-    //  this.board.push(data);
-    // This could potentially be as simple ass returning the boards id then replacing it
-    // })
-
-  }
-
-  addNewTicket(ticket: AddTicket) {
-    const { ticketTitle, listId } = ticket;
-    const list = this.board.lists.find(list => list.listId === listId);
+  addNewTicket(ticket: AddTicketResponse) {
+    const list = this.board.lists.find(list => list.listId === ticket.listId);
 
     if (list) {
-      const newTicketId = list.tickets.length > 0 ? Math.max(...list.tickets.map(ticket => ticket.ticketId)) + 1 : 1;
 
       const newTicket: Ticket = {
-        ticketId: newTicketId,
+        ticketId: ticket.ticketId,
         user: {
-          userId: -999,
+          userId: 3,  // grab current user id
           userProfilePicture: "sdfjs"
         },
         assignedUser: null,
-        ticketName: ticketTitle,
-        ticketDescription: "SDFsd",
-        ticketCreateDate: "today",
-        ticketDueDate: "now"
+        ticketName: ticket.ticketName,
+        ticketDescription: ticket.ticketDescription,
+        ticketCreateDate: ticket.ticketCreateDate,
+        ticketDueDate: "",
       };
       list.tickets.push(newTicket);
     } else {
-      console.error(`List with ID ${listId} not found.`);
+      console.error(`List with ID ${ticket.listId} not found.`);
     }
+  }
+
+  handleNewList(event: AddListResponse) {
+    this.board.lists.push({
+      listId: event.listId,
+      listName: event.listName,
+      tickets: []
+    })
   }
 }

@@ -1,29 +1,46 @@
 <div class="boards-container">
-  @for (list of board?.lists; track list) {
-    <div class="container">
-      <h2>{{ list.listName }}</h2>
-      <div
-        cdkDropList
-        [id]=list.listId.toString()
-        [cdkDropListData]="list.tickets"
-        [cdkDropListConnectedTo]="getConnectedLists(list.listId)"
-        class="list"
-        (cdkDropListDropped)="drop($event)">
-        @for (ticket of list.tickets; track ticket) {
-          <app-ticket [ticket]="ticket"></app-ticket>
+  <app-header></app-header>
+  <mat-sidenav-container id="navcontainer">
+    <mat-sidenav mode="side" opened class="sidenav">
+        <app-navbar></app-navbar>
+    </mat-sidenav>
+    <mat-sidenav-content id="maincontent">
+      @defer (when found) {
+        @for (list of board?.lists; track list) {
+          <div class="list-container">
+            <div>
+              <h2>{{ list.listName }}</h2>
+              <div
+                cdkDropList
+                [id]=list.listId.toString()
+                [cdkDropListData]="list.tickets"
+                [cdkDropListConnectedTo]="getConnectedLists(list.listId)"
+                class="list"
+                (cdkDropListDropped)="drop($event)">
+                @for (ticket of list.tickets; track ticket) {
+                  <app-ticket [ticket]="ticket"></app-ticket>
+                }
+              </div>
+            </div>
+            <app-add-ticket [listId]="list.listId" (newTicket)="addNewTicket($event)"></app-add-ticket>
+          </div>
         }
-        <app-add-ticket [listId]="list.listId" (newTicket)="addNewTicket($event)"></app-add-ticket>
-      </div>
-    </div>
-  }
-  @if (found) {
-    <div class="container">
-      <h2>Add List</h2>
-      <div class="list">
-        <app-add-list (newList)="addNewList($event)"></app-add-list>
-      </div>
-    </div>
-  } @else {
-    No Board found :(
-  }
+      } @placeholder {
+        @if (!error) {
+          <div class="loader">
+            <mat-spinner color="accent"></mat-spinner>
+          </div>
+        }
+      }
+      @if (found) {
+        <div class="addlist-container">
+          <h2>Add List</h2>
+          <app-add-list [boardId]="this.currentBoard" (newList)="handleNewList($event)"></app-add-list>
+        </div>
+      }
+      @if (error) {
+        No Board found :(
+      }
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>

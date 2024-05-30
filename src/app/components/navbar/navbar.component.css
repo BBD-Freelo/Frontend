@@ -1,0 +1,16 @@
+.nav{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.navbutton {
+    position: absolute;
+    bottom: 2em;
+    width: 80%;
+}
+
+.link:hover{
+    cursor: pointer;
+  }
