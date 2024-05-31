@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { FormControl, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 import { signIn } from 'aws-amplify/auth';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,7 +10,7 @@ import { Regex } from '../../../enums/regex';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatLabel, ReactiveFormsModule],
+  imports: [FormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatLabel, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -31,13 +30,12 @@ export class LoginComponent {
     this.loginError = null;
     if (this.passwordFormControl.invalid || this.emailFormControl.invalid) {
       return;
-    };
+    }
     try {
       await signIn({
         username: this.email,
         password: this.password
       });
-      console.log("Login successful");
     } catch (err: any) {
       this.loginError = err.message;
     }
