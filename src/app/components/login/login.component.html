@@ -13,12 +13,18 @@
                 @if (emailFormControl.hasError('pattern')) {
                     <mat-error>You entered an invalid email address.</mat-error>
                   }
+                @if (emailFormControl.hasError('required')) {
+                    <mat-error>This field is required.</mat-error>
+                  }
             </mat-form-field>
             <mat-form-field color="accent" class="full-width">
                 <mat-label  for="password">Password</mat-label>
                 <input type="password" id="password" name="password" matInput [formControl]="passwordFormControl" [(ngModel)]="password" required />
                 @if (passwordFormControl.hasError('minlength')) {
                     <mat-error>Your password must be longer than 8 characters.</mat-error>
+                }
+                @if (passwordFormControl.hasError('required')) {
+                    <mat-error>This field is required.</mat-error>
                 }
             </mat-form-field>
             <button color="accent" mat-raised-button type="submit">Sign In</button>
