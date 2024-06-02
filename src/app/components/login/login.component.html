@@ -27,11 +27,14 @@
                     <mat-error>This field is required.</mat-error>
                 }
             </mat-form-field>
-            <button color="accent" mat-raised-button type="submit">Sign In</button>
+            <button color="accent" mat-raised-button type="submit">Log In</button>
             @if (loginError){
                 <mat-error>{{loginError}}</mat-error>
             }
         </form>
+        <section class="register">
+            <p>Don't have an account? <a class="link" (click)="navigateToSignUp()">Sign Up</a></p>
+        </section>
     </section>
 </div>
 

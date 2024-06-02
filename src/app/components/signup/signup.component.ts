@@ -25,24 +25,28 @@ export class SignupComponent {
   }
 
   async onSubmit(form: any) {
-      console.log(this.emailFormControl.value);
-      console.log(this.passwordFormControl.value);
+    console.log(this.emailFormControl.value);
+    console.log(this.passwordFormControl.value);
 
-      this.signupError = null;
-      if (this.passwordFormControl.invalid || this.emailFormControl.invalid) {
-        return;
-      };
-      try {
-        if (this.emailFormControl.value !== null && this.passwordFormControl.value) {
-          const { isSignUpComplete } = await signUp({
-            username: this.emailFormControl.value,
-            password: this.passwordFormControl.value,
-           });
-           console.log('Sign up success!', isSignUpComplete);
-           this.router.navigate(['/confirm-signup']);
-        }
-      } catch (error: any) {
-        this.signupError = error.message;
+    this.signupError = null;
+    if (this.passwordFormControl.invalid || this.emailFormControl.invalid) {
+      return;
+    };
+    try {
+      if (this.emailFormControl.value !== null && this.passwordFormControl.value) {
+        const { isSignUpComplete } = await signUp({
+          username: this.emailFormControl.value,
+          password: this.passwordFormControl.value,
+          });
+          console.log('Sign up success!', isSignUpComplete);
+          this.router.navigate(['/confirm-signup']);
       }
+    } catch (error: any) {
+      this.signupError = error.message;
     }
+  }
+
+  navigateToLogIn(){
+    this.router.navigate(['/login']);
+  }
 }
