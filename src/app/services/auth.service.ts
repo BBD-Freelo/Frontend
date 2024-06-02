@@ -30,4 +30,21 @@ export class AuthService {
     }
   }
 
+  async getUserAccessToken(): Promise<any> {
+    try {
+      const session = await fetchAuthSession();
+      console.log("🚀 ~ AuthService ~ getUserSession ~ session:", session)
+      if (session && session.tokens) {
+        console.log("🚀 ~ AuthService ~ getUserSession ~ session:", session)
+        return session.tokens.accessToken;
+      } else {
+        console.error('Error: Session or tokens are undefined');
+        throw new Error('Session or tokens are undefined');
+      }
+    } catch (error) {
+      console.error('Error fetching user session:', error);
+      throw error;
+    }
+  }
+
 }

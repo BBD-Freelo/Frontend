@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "freelofrontendba088911_identitypool_ba088911",
+    "identityPoolName": "freelofe9bafae98_identitypool_9bafae98",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "freeloba088911",
-    "userPoolName": "freelofrontendba088911_userpool_ba088911",
+    "resourceNameTruncated": "freelo9bafae98",
+    "userPoolName": "freelofe9bafae98_userpool_9bafae98",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -31,10 +31,10 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "freeloba088911_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "freelo9bafae98_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "ba088911",
-    "resourceName": "freelofrontendba088911",
+    "sharedId": "9bafae98",
+    "resourceName": "freelofe9bafae98",
     "authSelections": "identityPoolAndUserPool",
     "useDefault": "default",
     "usernameAttributes": [
