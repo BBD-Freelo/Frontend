@@ -5,6 +5,11 @@
         <mat-icon>edit</mat-icon>
     </button>
   }
+  @else{
+    <button mat-icon-button (click)="editMode = false">
+      <mat-icon>edit_off</mat-icon>
+  </button>
+  }
 </div>
 <mat-dialog-content>
   <div class="ticket-body">
@@ -23,10 +28,14 @@
           @if (formGroup.controls.descriptionControl.hasError('maxlength')) {
             <mat-error>Please keep description under 250 characters</mat-error>
           }
+          @if (formGroup.controls.descriptionControl.hasError('pattern')) {
+            <mat-error>Please only enter alphabet characters, numbers, commas fullstops and question marks</mat-error>
+          }
+
         </mat-form-field>
 
         <div class="ticket-row">
-          <mat-form-field>
+          <mat-form-field color="accent">
             <mat-label>Assigned To</mat-label>
             <mat-select type="text" matInput [(value)]="assignedId">
               @for (collaborator of data.collaborators; track collaborator){
@@ -37,7 +46,7 @@
         </div>
 
         <div class="ticket-row"> 
-          <mat-form-field>
+          <mat-form-field color="accent">
             <mat-label>Select a due date</mat-label>
             <input matInput [matDatepicker]="datepicker" disabled>
             <mat-hint>MM/DD/YYYY</mat-hint>
@@ -48,13 +57,14 @@
       </form>
     }
     @else {
-      <div class="ticket-row">
+
+      <div class="description">
           <mat-label class="icon-label">
               <mat-icon>article</mat-icon>
               Description
           </mat-label>
+          <p>{{data.description}}</p>
       </div>
-      <p>{{data.description}}</p>
       <div class="ticket-row">
         <div>
             <mat-label class="icon-label">

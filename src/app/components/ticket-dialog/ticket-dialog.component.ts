@@ -42,7 +42,7 @@ export class TicketDialogComponent {
   datepicker: Date = new Date();
   assignedId: number | undefined = undefined;
   formGroup = new FormGroup({
-    descriptionControl: new FormControl('', [Validators.maxLength(500)]),
+    descriptionControl: new FormControl('', [Validators.maxLength(500), Validators.pattern("^[a-zA-Z0-9.,?!/ ]*$")]),
   })
 
 
@@ -57,7 +57,7 @@ export class TicketDialogComponent {
   }
 
   update(): void {
-    if (this.formGroup.invalid) return;
+    if (this.formGroup.controls.descriptionControl.invalid) return;
 
     let UpdateTicketResponse: UpdateTicketResponse = {
       isEdit: true,
