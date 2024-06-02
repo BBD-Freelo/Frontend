@@ -1,19 +1,19 @@
 {
   "providers": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-freelo-dev-cd842-authRole",
-      "UnauthRoleArn": "arn:aws:iam::263883060207:role/amplify-freelo-dev-cd842-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::263883060207:role/amplify-freelo-dev-cd842-authRole",
+      "AuthRoleName": "amplify-freelofe-dev-34987-authRole",
+      "UnauthRoleArn": "arn:aws:iam::263883060207:role/amplify-freelofe-dev-34987-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::263883060207:role/amplify-freelofe-dev-34987-authRole",
       "Region": "eu-west-1",
-      "DeploymentBucketName": "amplify-freelo-dev-cd842-deployment",
-      "UnauthRoleName": "amplify-freelo-dev-cd842-unauthRole",
-      "StackName": "amplify-freelo-dev-cd842",
-      "StackId": "arn:aws:cloudformation:eu-west-1:263883060207:stack/amplify-freelo-dev-cd842/4bbbd1a0-1ec7-11ef-9f32-063483407edd",
-      "AmplifyAppId": "d2jqhpwliqd33b"
+      "DeploymentBucketName": "amplify-freelofe-dev-34987-deployment",
+      "UnauthRoleName": "amplify-freelofe-dev-34987-unauthRole",
+      "StackName": "amplify-freelofe-dev-34987",
+      "StackId": "arn:aws:cloudformation:eu-west-1:263883060207:stack/amplify-freelofe-dev-34987/57c07010-20ba-11ef-9e8f-0a773f3f4ca9",
+      "AmplifyAppId": "d2fno07h4rymuo"
     }
   },
   "auth": {
-    "freelob7bf56e7": {
+    "freelofe9bafae98": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -39,20 +39,20 @@
         ]
       },
       "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-freelo-dev-cd842-deployment/amplify-cfn-templates/auth/freelob7bf56e7-cloudformation-template.json",
-        "logicalId": "authfreelob7bf56e7"
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-freelofe-dev-34987-deployment/amplify-cfn-templates/auth/freelofe9bafae98-cloudformation-template.json",
+        "logicalId": "authfreelofe9bafae98"
       },
-      "lastPushTimeStamp": "2024-05-30T21:00:47.779Z",
+      "lastPushTimeStamp": "2024-06-02T08:33:41.373Z",
       "output": {
-        "UserPoolId": "eu-west-1_G5sev29RF",
-        "AppClientIDWeb": "36th4m7a3h4jmea0prfdgmf1ai",
-        "AppClientID": "6u97cvcp3amdrnmteaeehktpcp",
-        "IdentityPoolId": "eu-west-1:0439b292-5bb2-410a-aec0-0cbe4fe333f3",
-        "UserPoolArn": "arn:aws:cognito-idp:eu-west-1:263883060207:userpool/eu-west-1_G5sev29RF",
-        "IdentityPoolName": "freelob7bf56e7_identitypool_b7bf56e7__dev",
-        "UserPoolName": "freelob7bf56e7_userpool_b7bf56e7"
+        "UserPoolId": "eu-west-1_4iGnsfNem",
+        "AppClientIDWeb": "4hveqs7l8i0jon1n4h75dp6muk",
+        "AppClientID": "23h4sv6g55ur6ol4ht698j41r5",
+        "IdentityPoolId": "eu-west-1:1edf36dc-0152-40d9-8614-6cad291aa879",
+        "UserPoolArn": "arn:aws:cognito-idp:eu-west-1:263883060207:userpool/eu-west-1_4iGnsfNem",
+        "IdentityPoolName": "freelofe9bafae98_identitypool_9bafae98__dev",
+        "UserPoolName": "freelofe9bafae98_userpool_9bafae98"
       },
-      "lastPushDirHash": "l1fiFlR295gIv6LQLIdkQPLTYDg="
+      "lastPushDirHash": "SkIiXRIqL14+Bt6KRdIc19LUK4Q="
     }
   }
 }

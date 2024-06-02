@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Regex } from '../../../enums/regex';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -19,18 +20,27 @@ export class SignupComponent {
   emailFormControl = new FormControl('', [Validators.required, Validators.pattern(Regex.Email)]);
   signupError: string | null = null;
 
+  constructor(private router: Router){
+     
+  }
+
   async onSubmit(form: any) {
-      const { email, password } = form.value;
+      console.log(this.emailFormControl.value);
+      console.log(this.passwordFormControl.value);
+
       this.signupError = null;
       if (this.passwordFormControl.invalid || this.emailFormControl.invalid) {
         return;
       };
       try {
-       const { isSignUpComplete } = await signUp({
-        username: email,
-        password: password,
-       });
-       console.log('Sign up success!', isSignUpComplete);
+        if (this.emailFormControl.value !== null && this.passwordFormControl.value) {
+          const { isSignUpComplete } = await signUp({
+            username: this.emailFormControl.value,
+            password: this.passwordFormControl.value,
+           });
+           console.log('Sign up success!', isSignUpComplete);
+           this.router.navigate(['/confirm-signup']);
+        }
       } catch (error: any) {
         this.signupError = error.message;
       }

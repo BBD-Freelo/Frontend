@@ -6,6 +6,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Regex } from '../../../enums/regex';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-login',
@@ -22,8 +24,8 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
 
-  constructor() {
-
+  constructor(private router: Router){
+     
   }
 
   async signInUser(){
@@ -32,11 +34,20 @@ export class LoginComponent {
       return;
     }
     try {
-      await signIn({
-        username: this.email,
-        password: this.password
-      });
+      const email = this.emailFormControl.value;
+      const password = this.passwordFormControl.value;
+
+      if (email && password) {
+        console.log(`Attempting login with email: ${email} using password: ${password}`);
+        const user = await signIn({
+          username: email,
+          password: password
+        });
+        console.log('Sign in success!', user);
+        this.router.navigate(['/board/1']);
+      }
     } catch (err: any) {
+      console.error('Error signing in:', err);
       this.loginError = err.message;
     }
   }
