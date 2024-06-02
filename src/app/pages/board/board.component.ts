@@ -134,7 +134,7 @@ export class BoardComponent {
 
   removeTicket(res: RemoveTicketResponse) {
     if (res) {
-      this.apiService.delete(`/ticket/remove/${res.ticketId}`).subscribe(() => {
+      this.apiService.delete(`/ticket/${res.ticketId}`).subscribe(() => {
         this.board.lists.forEach(list => {
           list.tickets = list.tickets.filter(ticket => ticket.ticketId !== res.ticketId);
         });
@@ -149,7 +149,7 @@ export class BoardComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.apiService.delete(`/list/remove/${list.listId}`).subscribe(() => {
+        this.apiService.delete(`/list/${list.listId}`).subscribe(() => {
           this.board.lists = this.board.lists.filter((l) => l.listId !== list.listId);
         });
       }
