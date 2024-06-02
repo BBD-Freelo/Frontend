@@ -1,0 +1,58 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-freelo-dev-cd842-authRole",
+      "UnauthRoleArn": "arn:aws:iam::263883060207:role/amplify-freelo-dev-cd842-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::263883060207:role/amplify-freelo-dev-cd842-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-freelo-dev-cd842-deployment",
+      "UnauthRoleName": "amplify-freelo-dev-cd842-unauthRole",
+      "StackName": "amplify-freelo-dev-cd842",
+      "StackId": "arn:aws:cloudformation:eu-west-1:263883060207:stack/amplify-freelo-dev-cd842/4bbbd1a0-1ec7-11ef-9f32-063483407edd",
+      "AmplifyAppId": "d2jqhpwliqd33b"
+    }
+  },
+  "auth": {
+    "freelob7bf56e7": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-freelo-dev-cd842-deployment/amplify-cfn-templates/auth/freelob7bf56e7-cloudformation-template.json",
+        "logicalId": "authfreelob7bf56e7"
+      },
+      "lastPushTimeStamp": "2024-05-30T21:00:47.779Z",
+      "output": {
+        "UserPoolId": "eu-west-1_G5sev29RF",
+        "AppClientIDWeb": "36th4m7a3h4jmea0prfdgmf1ai",
+        "AppClientID": "6u97cvcp3amdrnmteaeehktpcp",
+        "IdentityPoolId": "eu-west-1:0439b292-5bb2-410a-aec0-0cbe4fe333f3",
+        "UserPoolArn": "arn:aws:cognito-idp:eu-west-1:263883060207:userpool/eu-west-1_G5sev29RF",
+        "IdentityPoolName": "freelob7bf56e7_identitypool_b7bf56e7__dev",
+        "UserPoolName": "freelob7bf56e7_userpool_b7bf56e7"
+      },
+      "lastPushDirHash": "l1fiFlR295gIv6LQLIdkQPLTYDg="
+    }
+  }
+}
