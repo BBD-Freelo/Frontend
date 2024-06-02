@@ -1,66 +1,93 @@
-<h1 mat-dialog-title>{{data.title}}</h1>
+<div class="ticket-row">
+  <h1 mat-dialog-title>{{data.title}}</h1>
+  @if (!editMode){
+    <button mat-icon-button (click)="editMode = true">
+        <mat-icon>edit</mat-icon>
+    </button>
+  }
+</div>
 <mat-dialog-content>
   <div class="ticket-body">
-    <div class="ticket-row">
-        <mat-label class="icon-label">
-            <mat-icon>article</mat-icon>
-            Description
-        </mat-label>
-        @if (!descriptionEdit){
+    @if (editMode) {
+      <form class="form" [formGroup]="formGroup">
+        <div class="ticket-row">
+          <mat-label class="icon-label">
+              <mat-icon>article</mat-icon>
+              Description
+          </mat-label>
+        </div>
 
-          <button mat-icon-button (click)="descriptionEdit = true">
-              <mat-icon>edit</mat-icon>
-          </button>
-        }
-    </div>
-    @if (descriptionEdit){
-      <form (ngSubmit)="saveDescription()" class="form">
-      <mat-form-field class="full-width" color="accent">
-        <mat-label>New List</mat-label>
-        <textarea type="text" matInput [formControl]="valueFormControl" placeholder="Ex. In Progress"></textarea>
-        @if (valueFormControl.hasError('maxlength')) {
-          <mat-error>Please keep description under 250 characters</mat-error>
-        }
-      </mat-form-field>
-    </form>
-    } 
-    @else {
-      <p>{{data.description}}</p>
+        <mat-form-field class="full-width" color="accent">
+          <mat-label>New List</mat-label>
+          <textarea type="text" matInput [formControl]="formGroup.controls.descriptionControl" placeholder="Ex. In Progress"></textarea>
+          @if (formGroup.controls.descriptionControl.hasError('maxlength')) {
+            <mat-error>Please keep description under 250 characters</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="ticket-row">
+          <mat-form-field>
+            <mat-label>Assigned To</mat-label>
+            <mat-select type="text" matInput [(value)]="assignedId">
+              @for (collaborator of data.collaborators; track collaborator){
+                <mat-option value="{{collaborator.userId}}">{{collaborator.userId}}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="ticket-row"> 
+          <mat-form-field>
+            <mat-label>Select a due date</mat-label>
+            <input matInput [matDatepicker]="datepicker" disabled>
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
+            <mat-datepicker #datepicker disabled="false"></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </form>
     }
-    <div class="ticket-row">
+    @else {
+      <div class="ticket-row">
+          <mat-label class="icon-label">
+              <mat-icon>article</mat-icon>
+              Description
+          </mat-label>
+      </div>
+      <p>{{data.description}}</p>
+      <div class="ticket-row">
         <div>
             <mat-label class="icon-label">
                 <mat-icon>schedule</mat-icon>
                 Due Date: {{data.due}}
             </mat-label>
         </div>
-    </div>
-    <div class="ticket-row">
-        <div>
-            <mat-label class="icon-label">
-                <mat-icon>calendar_month</mat-icon>
-                Created: {{data.created}}
-            </mat-label>
-        </div>
-        <div>
-            <mat-label class="icon-label">
-                <mat-icon>calendar_month</mat-icon>
-                Last Updated: {{data.updated}}
-            </mat-label>
-        </div>
-    </div>
-    
-
+      </div>
+      <div class="ticket-row">
+          <div>
+              <mat-label class="icon-label">
+                  <mat-icon>calendar_month</mat-icon>
+                  Created: {{data.created}}
+              </mat-label>
+          </div>
+          <div>
+              <mat-label class="icon-label">
+                  <mat-icon>calendar_month</mat-icon>
+                  Last Updated: {{data.updated}}
+              </mat-label>
+          </div>
+      </div>
+    }
   </div>
 </mat-dialog-content>
 <mat-dialog-actions>
   <div class="ticket-row">
     <div>
       <button mat-button (click)="onNoClick()" cdkFocusInitial>Close</button>
-      <button mat-button (click)="openDeleteDialog(data)" color="warn" >Delete</button>
+      <button mat-button (click)="openDeleteDialog(data.id)" color="warn" >Delete</button>
     </div>
-    @if (descriptionEdit){
-      <button mat-button class="save-button" (click)="saveDescription()" color="accent">Save</button>
+    @if (editMode){
+      <button mat-button class="save-button" (click)="update()" color="accent">Save</button>
     }
   </div>
 </mat-dialog-actions>

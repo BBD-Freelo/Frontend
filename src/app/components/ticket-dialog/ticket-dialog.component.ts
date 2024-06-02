@@ -5,10 +5,12 @@ import { MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { MatFormField, MatInputModule } from '@angular/material/input';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { Ticket } from '../../interfaces/entities/ticket';
-import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
+import { RemoveTicketResponse, UpdateTicketResponse } from '../../interfaces/Responses/ticketResponse';
+import { MatOption, MatSelect } from '@angular/material/select';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-ticket-dialog',
@@ -23,15 +25,26 @@ import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component'
     MatIcon,
     MatIconButton,
     FormsModule,
+    MatSelect,
+    MatOption,
     MatFormFieldModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDatepickerModule
   ],
+  providers: [provideNativeDateAdapter()],
   templateUrl: './ticket-dialog.component.html',
   styleUrl: './ticket-dialog.component.css'
 })
 export class TicketDialogComponent {
-  descriptionEdit: boolean = false;
-  valueFormControl = new FormControl('', [Validators.maxLength(500)]);
+
+  editMode: boolean = false;
+
+  datepicker: Date = new Date();
+  assignedId: number | undefined = undefined;
+  formGroup = new FormGroup({
+    descriptionControl: new FormControl('', [Validators.maxLength(500)]),
+  })
+
 
   constructor(
     public dialogRef: MatDialogRef<TicketDialogComponent>,
@@ -43,21 +56,28 @@ export class TicketDialogComponent {
     this.dialogRef.close();
   }
 
-  saveDescription(): void {
-    if (this.valueFormControl.invalid) return;
+  update(): void {
+    if (this.formGroup.invalid) return;
+
+    let UpdateTicketResponse: UpdateTicketResponse = {
+      isEdit: true,
+      ticketId: this.data.id,
+      ticketDescription: this.formGroup.controls.descriptionControl.value || this.data.description,
+      ticketDueDate: this.datepicker || new Date(this.data.due),
+      ticketName: this.data.title,
+      assignedUser: this.assignedId || this.data.assigned,
+    };
+
+    this.dialogRef.close(UpdateTicketResponse);
   }
 
-  openDeleteDialog(ticket: TicketData): void {
-    const dialogRef = this.dialog.open(DeleteDialogComponent, {
-      data: {name: ticket.title, id: ticket.id},
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        // this.apiService.delete(`/board/${board.boardId}`).subscribe(() => {
-        //   this.boards = this.boards.filter((b) => b.boardId !== board.boardId);
-        // });
-      }
-    });
+  openDeleteDialog(ticketId: number): void 
+  {
+    let RemoveTicketResponse: RemoveTicketResponse = {
+      isEdit: false,
+      ticketId: ticketId,
+    };
+    
+    this.dialogRef.close(RemoveTicketResponse);
   }
 }

@@ -5,5 +5,6 @@ export interface TicketData {
     created: string;
     updated: string;
     due: string;
-    assigned: string;
+    assigned: number;
+    collaborators: User[];
 }

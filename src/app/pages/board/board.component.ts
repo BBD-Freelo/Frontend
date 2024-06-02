@@ -29,7 +29,7 @@ import {SuccesResponse} from "../../interfaces/Responses/success";
 import { List } from '../../interfaces/entities/list';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialogComponent } from '../../components/delete-dialog/delete-dialog.component';
-import { RemoveTicketResponse } from '../../interfaces/Responses/removeTicket';
+import { RemoveTicketResponse } from '../../interfaces/Responses/ticketResponse';
 
 @Component({
   selector: 'app-board',
@@ -79,9 +79,6 @@ export class BoardComponent {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      // console.log(event.previousContainer.data[event.previousIndex]);
-      // console.log('Current List ID:', event.container.id);
-      // console.log('Previous List ID:', event.previousContainer.id);
       const req: MoveTicketRequest = {
         moveToListId: Number(event.container.id),
         ticketId: event.previousContainer.data[event.previousIndex].ticketId
