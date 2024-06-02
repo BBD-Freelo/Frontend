@@ -3,7 +3,7 @@ export interface AddTicketResponse {
   listId: number;
   ticketName: string;
   ticketDescription: string;
-  ticketCreateDate: string;
-  ticketUpdateDate: string;
-  ticketDueDate: string | null;
+  ticketCreateDate: Date;
+  ticketUpdateDate: Date;
+  ticketDueDate: Date;
 }

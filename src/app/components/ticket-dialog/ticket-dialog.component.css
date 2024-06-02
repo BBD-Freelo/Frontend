@@ -1,0 +1,46 @@
+.ticket-body{
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    margin: 10px;
+    width: 420px;
+}
+
+.ticket-row{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3em;
+}
+
+.description{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 100%;
+}
+
+.description p {
+    width: 100%;
+    padding: 2px;
+    height: 5em;
+    outline: 1px solid #d2d2d2;
+    border-radius: 5px;
+    overflow-y: auto;
+}
+
+.icon-label{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+}
+
+.full-width {
+    width: 100%;
+  }
+
+.save-button{
+    justify-self: flex-end;
+}
