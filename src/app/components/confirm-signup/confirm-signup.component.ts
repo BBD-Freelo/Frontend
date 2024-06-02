@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Regex } from '../../../enums/regex';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-confirm-signup',
@@ -15,6 +16,11 @@ import { Regex } from '../../../enums/regex';
   styleUrl: './confirm-signup.component.css'
 })
 export class ConfirmSignupComponent {
+
+  constructor(private router: Router){
+     
+  }
+
   emailFormControl = new FormControl('', [Validators.required, Validators.pattern(Regex.Email)]);
   codeFormControl = new FormControl('', [Validators.required]);
   confirmationError: string | null = null;
@@ -22,17 +28,17 @@ export class ConfirmSignupComponent {
     this.confirmationError = null;
     if (this.codeFormControl.invalid || this.emailFormControl.invalid) {
       return;
-    };
-    const { email, code } = form.value;
-  
-    let user : ConfirmSignUpInput = {
-      username: email,
-      confirmationCode: code 
-    };
-  
+    };  
     try {
-      const output = await confirmSignUp(user);
-      console.log('Confirmation success!', output);
+        if (this.emailFormControl.value !== null && this.codeFormControl.value !== null) {
+          let user : ConfirmSignUpInput = {
+            username: this.emailFormControl.value,
+            confirmationCode: this.codeFormControl.value 
+          };
+          const output = await confirmSignUp(user);
+          console.log('Confirmation success!', output);
+          this.router.navigate(['/login']);
+        }
     } catch (error: any) {
       this.confirmationError = error.message;
     }
