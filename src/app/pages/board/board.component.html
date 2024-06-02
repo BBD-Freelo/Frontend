@@ -23,7 +23,7 @@
                 class="list"
                 (cdkDropListDropped)="drop($event)">
                 @for (ticket of list.tickets; track ticket) {
-                  <app-ticket [ticket]="ticket"></app-ticket>
+                  <app-ticket [ticket]="ticket" [collaborators]="board.collaborators" (removeTicket)="removeTicket($event)"></app-ticket>
                 }
               </div>
             </div>

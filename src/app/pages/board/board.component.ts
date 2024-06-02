@@ -29,6 +29,7 @@ import {SuccesResponse} from "../../interfaces/Responses/success";
 import { List } from '../../interfaces/entities/list';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialogComponent } from '../../components/delete-dialog/delete-dialog.component';
+import { RemoveTicketResponse } from '../../interfaces/Responses/ticketResponse';
 
 @Component({
   selector: 'app-board',
@@ -78,9 +79,6 @@ export class BoardComponent {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      // console.log(event.previousContainer.data[event.previousIndex]);
-      // console.log('Current List ID:', event.container.id);
-      // console.log('Previous List ID:', event.previousContainer.id);
       const req: MoveTicketRequest = {
         moveToListId: Number(event.container.id),
         ticketId: event.previousContainer.data[event.previousIndex].ticketId
@@ -118,18 +116,30 @@ export class BoardComponent {
       const newTicket: Ticket = {
         ticketId: ticket.ticketId,
         user: {
-          userId: 3,  // grab current user id
-          userProfilePicture: "sdfjs"
+          userId: 3,
+          userProfilePicture: "sdfjs",
+          email: "email"
         },
         assignedUser: null,
         ticketName: ticket.ticketName,
         ticketDescription: ticket.ticketDescription,
         ticketCreateDate: ticket.ticketCreateDate,
-        ticketDueDate: "",
+        ticketUpdateDate: ticket.ticketUpdateDate,
+        ticketDueDate: ticket.ticketDueDate
       };
       list.tickets.push(newTicket);
     } else {
       console.error(`List with ID ${ticket.listId} not found.`);
+    }
+  }
+
+  removeTicket(res: RemoveTicketResponse) {
+    if (res) {
+      this.apiService.delete(`/ticket/${res.ticketId}`).subscribe(() => {
+        this.board.lists.forEach(list => {
+          list.tickets = list.tickets.filter(ticket => ticket.ticketId !== res.ticketId);
+        });
+      });
     }
   }
 
@@ -140,9 +150,9 @@ export class BoardComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // this.apiService.delete(`/list/${list.listId}`).subscribe(() => {
-        //   this.board.lists = this.board.lists.filter((l) => l.listId !== list.listId);
-        // });
+        this.apiService.delete(`/list/${list.listId}`).subscribe(() => {
+          this.board.lists = this.board.lists.filter((l) => l.listId !== list.listId);
+        });
       }
     });
   }
