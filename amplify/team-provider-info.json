@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-freelofe-dev-34987-authRole",
+      "UnauthRoleArn": "arn:aws:iam::263883060207:role/amplify-freelofe-dev-34987-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::263883060207:role/amplify-freelofe-dev-34987-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-freelofe-dev-34987-deployment",
+      "UnauthRoleName": "amplify-freelofe-dev-34987-unauthRole",
+      "StackName": "amplify-freelofe-dev-34987",
+      "StackId": "arn:aws:cloudformation:eu-west-1:263883060207:stack/amplify-freelofe-dev-34987/57c07010-20ba-11ef-9e8f-0a773f3f4ca9",
+      "AmplifyAppId": "d2fno07h4rymuo"
+    },
+    "categories": {
+      "auth": {
+        "freelofe9bafae98": {}
+      }
+    }
+  }
+}
