@@ -21,12 +21,10 @@ export class SignupComponent {
   signupError: string | null = null;
 
   constructor(private router: Router){
-     
+
   }
 
   async onSubmit(form: any) {
-    console.log(this.emailFormControl.value);
-    console.log(this.passwordFormControl.value);
 
     this.signupError = null;
     if (this.passwordFormControl.invalid || this.emailFormControl.invalid) {
