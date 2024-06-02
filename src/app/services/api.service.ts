@@ -22,16 +22,18 @@ export class ApiService {
   }
 
 
-  get<Response>(url: string): Observable<Response> {
-    return from(this.createAuthorizationHeader()).pipe(
-      switchMap(headers => this.http.get<Response>(`${environment.api_url}${url}`, { headers }))
-    );
-  }
-
-
   // get<Response>(url: string): Observable<Response> {
-  //   return this.http.get<Response>(`${environment.api_url}${url}`, { headers });
+  //   return from(this.createAuthorizationHeader()).pipe(
+  //     switchMap(headers => this.http.get<Response>(`${environment.api_url}${url}`, { headers }))
+  //   );
   // }
+
+
+  get<Response>(url: string): Observable<Response> {
+    const token = this.authService.getUserAccessToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<Response>(`${environment.api_url}${url}`, { headers });
+  }
 
   post<Response, Request>(url: string, body: Request): Observable<Response> {
     return from(this.createAuthorizationHeader()).pipe(
