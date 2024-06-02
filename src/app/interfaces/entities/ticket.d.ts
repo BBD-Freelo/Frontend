@@ -6,6 +6,7 @@ export interface Ticket {
   assignedUser: User | null;
   ticketName: string;
   ticketDescription: string;
-  ticketCreateDate: string;
-  ticketDueDate: string;
+  ticketCreateDate: Date;
+  ticketUpdateDate: Date;
+  ticketDueDate: Date;
 }

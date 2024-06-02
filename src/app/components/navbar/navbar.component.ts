@@ -49,9 +49,9 @@ export class NavbarComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // this.apiService.delete(`/board/${board.boardId}`).subscribe(() => {
-        //   this.boards = this.boards.filter((b) => b.boardId !== board.boardId);
-        // });
+        this.apiService.delete(`/board/remove/${board.boardId}`).subscribe(() => {
+          this.boards = this.boards.filter((b) => b.boardId !== board.boardId);
+        });
       }
     });
   }

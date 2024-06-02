@@ -24,3 +24,10 @@
     align-items: center;
     justify-content: space-between;
 }
+
+.nav-item button{
+    gap: 2em;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
