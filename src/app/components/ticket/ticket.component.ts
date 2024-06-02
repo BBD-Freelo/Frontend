@@ -8,6 +8,7 @@ import { TicketDialogComponent } from '../ticket-dialog/ticket-dialog.component'
 import { RemoveTicketResponse, UpdateTicketResponse } from '../../interfaces/Responses/ticketResponse';
 import { User } from '../../interfaces/entities/user';
 import { ApiService } from '../../services/api.service';
+import { TicketData } from '../../interfaces/components/ticketData';
 
 
 @Component({
@@ -29,14 +30,14 @@ export class ticketComponent {
   }
 
   openDialog(): void {
-    const data = {
+    const data: TicketData = {
       id: this.ticket.ticketId,
       title: this.ticket.ticketName,
       description: this.ticket.ticketDescription || 'No description',
       created: this.convertDate(this.ticket.ticketCreateDate),
       updated:  this.convertDate(this.ticket.ticketUpdateDate),
       due: this.convertDate(this.ticket.ticketDueDate),
-      assigned: this.ticket.assignedUser,
+      assigned: this.ticket.assignedUser || undefined,
       collaborators: this.collaborators,
     }
     const dialogRef = this.dialog.open(TicketDialogComponent, {
@@ -44,6 +45,8 @@ export class ticketComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      if (!result) return;
+      
       if (result.isEdit) {
         const updateRes = result as UpdateTicketResponse;
         this.apiService.patch(`/ticket`, updateRes).subscribe((res) => {

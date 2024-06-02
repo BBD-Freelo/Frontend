@@ -65,7 +65,7 @@ export class TicketDialogComponent {
       ticketDescription: this.formGroup.controls.descriptionControl.value || this.data.description,
       ticketDueDate: this.datepicker || new Date(this.data.due),
       ticketName: this.data.title,
-      assignedUser: this.assignedId || this.data.assigned,
+      assignedUser: this.assignedId || this.data.assigned?.userId || undefined,
     };
 
     this.dialogRef.close(UpdateTicketResponse);

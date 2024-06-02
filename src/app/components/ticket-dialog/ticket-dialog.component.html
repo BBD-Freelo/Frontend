@@ -39,7 +39,7 @@
             <mat-label>Assigned To</mat-label>
             <mat-select type="text" matInput [(value)]="assignedId">
               @for (collaborator of data.collaborators; track collaborator){
-                <mat-option value="{{collaborator.userId}}">{{collaborator.userId}}</mat-option>
+                <mat-option value="{{collaborator.userId}}">{{collaborator.email}}</mat-option>
               }
             </mat-select>
           </mat-form-field>

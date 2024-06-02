@@ -117,7 +117,8 @@ export class BoardComponent {
         ticketId: ticket.ticketId,
         user: {
           userId: 3,
-          userProfilePicture: "sdfjs"
+          userProfilePicture: "sdfjs",
+          email: "email"
         },
         assignedUser: null,
         ticketName: ticket.ticketName,

@@ -1,3 +1,4 @@
+import { User } from "../entities/user";
 export interface TicketData {
     id: number;
     title: string;
@@ -5,6 +6,6 @@ export interface TicketData {
     created: string;
     updated: string;
     due: string;
-    assigned: number;
+    assigned?: User;
     collaborators: User[];
 }
