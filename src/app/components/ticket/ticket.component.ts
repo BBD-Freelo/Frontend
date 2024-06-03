@@ -20,6 +20,7 @@ import { TicketData } from '../../interfaces/components/ticketData';
 })
 export class ticketComponent {
   @Output() removeTicket = new EventEmitter<RemoveTicketResponse>();
+  @Output() updateTicket = new EventEmitter<UpdateTicketResponse>();
   @Input({required: true}) ticket!: Ticket;
   @Input({required: true}) collaborators!: User[];
 
@@ -37,7 +38,7 @@ export class ticketComponent {
       created: this.convertDate(this.ticket.ticketCreateDate),
       updated:  this.convertDate(this.ticket.ticketUpdateDate),
       due: this.convertDate(this.ticket.ticketDueDate),
-      assigned: this.ticket.assignedUser || undefined,
+      assigned: this.ticket.assignedUser!,
       collaborators: this.collaborators,
     }
     const dialogRef = this.dialog.open(TicketDialogComponent, {
@@ -49,9 +50,7 @@ export class ticketComponent {
       
       if (result.isEdit) {
         const updateRes = result as UpdateTicketResponse;
-        this.apiService.patch(`/ticket`, updateRes).subscribe((res) => {
-        
-        });
+        this.updateTicket.emit(updateRes);
       }
       else {
         const removeRes = result as RemoveTicketResponse;
