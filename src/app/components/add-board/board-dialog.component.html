@@ -1,77 +1,48 @@
-<div class="ticket-row">
-  <h1 mat-dialog-title>{{data.title}}</h1>
-  @if (!editMode){
-    <button mat-icon-button (click)="editMode = true">
-        <mat-icon>edit</mat-icon>
-    </button>
-  }
-  @else{
-    <button mat-icon-button (click)="editMode = false">
-      <mat-icon>edit_off</mat-icon>
-  </button>
-  }
-</div>
 <mat-dialog-content>
-  <div class="ticket-body">
-      <form class="form" [formGroup]="formGroup">
-        <div class="ticket-row">
-          <mat-label class="icon-label">
-              <mat-icon>article</mat-icon>
-              Description
-          </mat-label>
-        </div>
-
-        <mat-form-field class="full-width" color="accent">
-          <mat-label>New List</mat-label>
-          <textarea type="text" matInput [formControl]="formGroup.controls.descriptionControl" placeholder="Ex. In Progress"></textarea>
-          @if (formGroup.controls.descriptionControl.hasError('maxlength')) {
-            <mat-error>Please keep description under 250 characters</mat-error>
-          }
-          @if (formGroup.controls.descriptionControl.hasError('pattern')) {
-            <mat-error>Please only enter alphabet characters, numbers, commas fullstops and question marks</mat-error>
-          }
-
-        </mat-form-field>
-
-        <div class="ticket-row">
-          <mat-form-field color="accent">
-            <mat-label>Assigned To</mat-label>
-            <mat-select type="text" matInput [(value)]="assignedId">
-              @for (collaborator of data.collaborators; track collaborator){
-                <mat-option value="{{collaborator.userId}}">{{collaborator.email}}</mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <div class="ticket-row"> 
-          <mat-form-field color="accent">
-            <mat-label>Select a due date</mat-label>
-            <input matInput [matDatepicker]="datepicker" disabled>
-            <mat-hint>MM/DD/YYYY</mat-hint>
-            <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
-            <mat-datepicker #datepicker disabled="false"></mat-datepicker>
-          </mat-form-field>
-        </div>
-        <div class="search-container">
-          <mat-form-field color="accent">
-          <input matInput placeholder="Search Users" class="search">
-          <button mat-icon-button>
-              <mat-icon>search</mat-icon>
-          </button>
-        </mat-form-field>
-      </div>
-      </form>
+<form class="board-body" [formGroup]="formGroup">
+  <div class="board-row">
+    <mat-icon>title</mat-icon>
+    <mat-label class="icon-label">Title</mat-label>
   </div>
+  <mat-form-field class="full-width" color="accent">
+    <input type="text" placeholder="Board Title" id="title" matInput [formControl]="formGroup.controls.titleControl" name="title" required />
+  </mat-form-field>
+  <div class="board-row">
+    <div class="icon-group">
+      <mat-icon>lock</mat-icon>
+      <mat-label class="icon-label">Private</mat-label>
+    </div>
+    <mat-slide-toggle [formControl]="formGroup.controls.privacyControl"></mat-slide-toggle>
+    <div class="icon-group">
+      <mat-icon>public</mat-icon>
+      <mat-label class="icon-label">Public</mat-label>
+    </div>
+  </div>
+  <div class="board-row">
+    <mat-icon>group_add</mat-icon>
+    <mat-label class="icon-label">Collaborators</mat-label>
+  </div>
+  <mat-form-field class="full-width" color="accent">
+    <input placeholder="Enter collaborator email addresses" id="collaborator" matInput name="collaborator" [formControl]="formGroup.controls.collaboratorsControl" required >
+    <button mat-icon-button matSuffix (click)="addCollaborator()">
+      <mat-icon>add</mat-icon>
+    </button>
+    @for (collaborator of collaboratorEmailList; track $index) {
+      <mat-chip-listbox>
+        <mat-chip >
+          {{collaborator}}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-listbox>
+    }
+  </mat-form-field>
+</form>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <div class="ticket-row">
+  <div class="space-between">
     <div>
-      <button mat-button (click)="onNoClick()" cdkFocusInitial>Close</button>
-      <button mat-button (click)="openDeleteDialog(data.id)" color="warn" >Delete</button>
+      <button mat-button (click)="onNoClick()" cdkFocusInitial>Cancel</button>
     </div>
-    @if (editMode){
-      <button mat-button class="save-button" (click)="update()" color="accent">Save</button>
-    }
-  </div>
+      <button mat-button type="submit" class="save-button" (click)="createBoard()" color="accent">Save</button>
+  </div> 
 </mat-dialog-actions>

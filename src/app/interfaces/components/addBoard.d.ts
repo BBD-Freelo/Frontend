@@ -1,5 +1,5 @@
-export interface AddBoardRequest {
+export interface AddBoard {
   boardCollaborators: number[];
-  boardName: string;
+  boardName: string | null;
   isPublic: boolean | false
 }

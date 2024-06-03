@@ -1,4 +1,4 @@
-.ticket-body{
+.board-body{
     display: flex;
     flex-direction: column;
     gap: 1.5em;
@@ -6,12 +6,11 @@
     width: 420px;
 }
 
-.ticket-row{
+.board-row{
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 3em;
+    gap: 1em;
 }
 
 .description{
@@ -43,4 +42,19 @@
 
 .save-button{
     justify-self: flex-end;
+}
+
+.icon-group{
+    display: flex;
+    padding: 0.5rem;
+    border-radius: 4px;
+    background-color: #f6c2da98;
+    gap: 0.5rem;
+}
+
+.space-between{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
