@@ -66,12 +66,18 @@
           <p>{{data.description}}</p>
       </div>
       <div class="ticket-row">
-        <div>
+          <mat-label class="icon-label">
+              <mat-icon>schedule</mat-icon>
+              Due Date: {{data.due}}
+          </mat-label>
+          @if (data.assigned) {
             <mat-label class="icon-label">
-                <mat-icon>schedule</mat-icon>
-                Due Date: {{data.due}}
+              <mat-icon>person</mat-icon>
+              Assigned To: 
+              <img src="{{profileUrl}}" alt="avatar" class="avatar"> 
+              {{data.assigned?.email}}
             </mat-label>
-        </div>
+          }
       </div>
       <div class="ticket-row">
           <div>
