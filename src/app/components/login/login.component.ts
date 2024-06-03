@@ -25,7 +25,7 @@ export class LoginComponent {
   password: string = '';
 
   constructor(private router: Router){
-     
+
   }
 
   async signInUser(){
@@ -47,8 +47,10 @@ export class LoginComponent {
         this.router.navigate(['/board/1']);
       }
     } catch (err: any) {
-
-      this.loginError = err.message;
+      if (err.message == "There is already a signed in user.")
+        this.router.navigate(['/board/1']);
+      else
+        this.loginError = err.message;
     }
   }
 
