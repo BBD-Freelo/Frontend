@@ -21,6 +21,6 @@ export const routes: Routes = [
   },
   { path: 'confirm-signup', component: ConfirmSignupComponent },
   { path: 'signup', component: SignupComponent },
-  { path: 'profile', component: UserprofileComponent },
+  // { path: 'profile', component: UserprofileComponent },
   { path: 'login', component: LoginComponent },
 ];

@@ -36,7 +36,7 @@ export class ConfirmSignupComponent {
             confirmationCode: this.codeFormControl.value 
           };
           const output = await confirmSignUp(user);
-          console.log('Confirmation success!', output);
+
           this.router.navigate(['/login']);
         }
     } catch (error: any) {

@@ -36,7 +36,7 @@ export class SignupComponent {
           username: this.emailFormControl.value,
           password: this.passwordFormControl.value,
           });
-          console.log('Sign up success!', isSignUpComplete);
+          
           this.router.navigate(['/confirm-signup']);
       }
     } catch (error: any) {
