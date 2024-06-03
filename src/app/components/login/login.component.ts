@@ -38,16 +38,16 @@ export class LoginComponent {
       const password = this.passwordFormControl.value;
 
       if (email && password) {
-        console.log(`Attempting login with email: ${email} using password: ${password}`);
+
         const user = await signIn({
           username: email,
           password: password
         });
-        console.log('Sign in success!', user);
+
         this.router.navigate(['/board/1']);
       }
     } catch (err: any) {
-      console.error('Error signing in:', err);
+
       this.loginError = err.message;
     }
   }

@@ -4,6 +4,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatLabel } from '@angular/material/form-field';
 import { AuthService } from '../../services/auth.service';
+import { signIn, signOut } from 'aws-amplify/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -16,11 +18,24 @@ export class HeaderComponent {
 
   profileUrl: string = '';
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private router: Router) {
    this.getProfileUrl();
   }
 
   async getProfileUrl() {
     this.profileUrl = await this.authService.getProfileUrl();
   }
+
+
+  async signOutUser() {
+    try {
+      await signOut();
+      console.log('Sign out success!');
+      this.router.navigate(['/login']);
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  }
+
+
 }
