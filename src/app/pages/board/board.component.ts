@@ -29,7 +29,7 @@ import {SuccesResponse} from "../../interfaces/Responses/success";
 import { List } from '../../interfaces/entities/list';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialogComponent } from '../../components/delete-dialog/delete-dialog.component';
-import { RemoveTicketResponse } from '../../interfaces/Responses/ticketResponse';
+import { RemoveTicketResponse, UpdateTicketResponse } from '../../interfaces/Responses/ticketResponse';
 
 @Component({
   selector: 'app-board',
@@ -139,6 +139,25 @@ export class BoardComponent {
         this.board.lists.forEach(list => {
           list.tickets = list.tickets.filter(ticket => ticket.ticketId !== res.ticketId);
         });
+      });
+    }
+  }
+
+  updateTicket(res: UpdateTicketResponse) {
+    if (res) {
+      this.apiService.patch<Ticket, unknown>(`/ticket`, res).subscribe((updatedTicket: Ticket) => {
+        const updatedList = this.board.lists.find(list => {
+          return list.tickets.some(ticket => ticket.ticketId === updatedTicket.ticketId);
+        });
+  
+        if (updatedList) {
+          const index = updatedList.tickets.findIndex(ticket => ticket.ticketId === updatedTicket.ticketId);
+          if (index!== -1) {
+            updatedList.tickets[index].assignedUser = updatedTicket.assignedUser;
+            updatedList.tickets[index].ticketDescription = updatedTicket.ticketDescription;
+            updatedList.tickets[index].ticketDueDate = updatedTicket.ticketDueDate;
+          }
+        }
       });
     }
   }
