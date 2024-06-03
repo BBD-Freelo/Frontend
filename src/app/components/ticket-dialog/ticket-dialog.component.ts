@@ -11,6 +11,7 @@ import { RemoveTicketResponse, UpdateTicketResponse } from '../../interfaces/Res
 import { MatOption, MatSelect } from '@angular/material/select';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-ticket-dialog',
@@ -44,13 +45,22 @@ export class TicketDialogComponent {
   formGroup = new FormGroup({
     descriptionControl: new FormControl('', [Validators.maxLength(500), Validators.pattern("^[a-zA-Z0-9.,?!/ ]*$")]),
   })
+  profileUrl: string = '';
 
 
   constructor(
     public dialogRef: MatDialogRef<TicketDialogComponent>,
     public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: TicketData,
-  ) {}
+    private authService: AuthService
+  ) {
+    this.getProfileUrl();
+  }
+
+
+  async getProfileUrl() {
+    this.profileUrl = await this.authService.getProfileUrl();
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -65,7 +75,7 @@ export class TicketDialogComponent {
       ticketDescription: this.formGroup.controls.descriptionControl.value || this.data.description,
       ticketDueDate: this.datepicker || new Date(this.data.due),
       ticketName: this.data.title,
-      assignedUser: this.assignedId || this.data.assigned?.userId || undefined,
+      assignedUser: this.assignedId || this.data.assigned?.userId,
     };
 
     this.dialogRef.close(UpdateTicketResponse);

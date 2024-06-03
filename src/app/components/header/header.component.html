@@ -4,8 +4,9 @@
         <H1>Freelo</H1>
     </span>
     <div class="accountcontainer">
-        <button mat-icon-button>
-            <mat-icon>account_circle</mat-icon>
-        </button>
+        <mat-label class="icon-label">
+            <img src="{{profileUrl}}" alt="avatar" class="avatar">
+        </mat-label>
     </div>
+    <button mat-raised-button (click)="signOutUser()">Sign Out</button>
 </mat-toolbar>

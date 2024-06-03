@@ -2,7 +2,7 @@
     <div>
         <h2>Welcome, {{ user.username }}</h2>
         <p>User ID: {{ user.userId }}</p>
-        <p>Sign-in Details: {{ user.signInDetails | json }}</p>
+        <p>Sign-in Details: {{ user.signInDetails.loginId | json }}</p>
     </div>
 }
 

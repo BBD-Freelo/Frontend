@@ -152,15 +152,15 @@
         }
       }
     },
-    "authfreelofe9bafae98": {
+    "authfreeloapp717e729d": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-freelofe-dev-34987-deployment/amplify-cfn-templates/auth/freelofe9bafae98-cloudformation-template.json",
+        "TemplateURL": "https://s3.amazonaws.com/amplify-freeloapp-dev-25f6c-deployment/amplify-cfn-templates/auth/freeloapp717e729d-cloudformation-template.json",
         "Parameters": {
-          "identityPoolName": "freelofe9bafae98_identitypool_9bafae98",
+          "identityPoolName": "freeloapp717e729d_identitypool_717e729d",
           "allowUnauthenticatedIdentities": false,
-          "resourceNameTruncated": "freelo9bafae98",
-          "userPoolName": "freelofe9bafae98_userpool_9bafae98",
+          "resourceNameTruncated": "freelo717e729d",
+          "userPoolName": "freeloapp717e729d_userpool_717e729d",
           "autoVerifiedAttributes": "email",
           "mfaConfiguration": "OFF",
           "mfaTypes": "SMS Text Message",
@@ -177,10 +177,10 @@
           "userpoolClientRefreshTokenValidity": 30,
           "userpoolClientWriteAttributes": "email",
           "userpoolClientReadAttributes": "email",
-          "userpoolClientLambdaRole": "freelo9bafae98_userpoolclient_lambda_role",
+          "userpoolClientLambdaRole": "freelo717e729d_userpoolclient_lambda_role",
           "userpoolClientSetAttributes": false,
-          "sharedId": "9bafae98",
-          "resourceName": "freelofe9bafae98",
+          "sharedId": "717e729d",
+          "resourceName": "freeloapp717e729d",
           "authSelections": "identityPoolAndUserPool",
           "useDefault": "default",
           "usernameAttributes": "email",
@@ -210,7 +210,7 @@
       "DependsOn": [
         "AuthRole",
         "UnauthRole",
-        "authfreelofe9bafae98"
+        "authfreeloapp717e729d"
       ],
       "Type": "AWS::Lambda::Function",
       "Properties": {
@@ -320,7 +320,7 @@
         },
         "idpId": {
           "Fn::GetAtt": [
-            "authfreelofe9bafae98",
+            "authfreeloapp717e729d",
             "Outputs.IdentityPoolId"
           ]
         },

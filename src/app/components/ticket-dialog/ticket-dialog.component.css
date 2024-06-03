@@ -3,7 +3,7 @@
     flex-direction: column;
     gap: 1.5em;
     margin: 10px;
-    width: 420px;
+    width: 600px;
 }
 
 .ticket-row{
@@ -12,6 +12,12 @@
     align-items: center;
     justify-content: space-between;
     gap: 3em;
+}
+
+.ticket-row img{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
 }
 
 .description{
