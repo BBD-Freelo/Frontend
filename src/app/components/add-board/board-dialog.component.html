@@ -31,7 +31,7 @@
       <mat-chip-listbox>
         <mat-chip >
           {{collaborator}}
-          <mat-icon matChipRemove>cancel</mat-icon>
+          <mat-icon matChipRemove (click)="removeCollaborator($index)">cancel</mat-icon>
         </mat-chip>
       </mat-chip-listbox>
     }

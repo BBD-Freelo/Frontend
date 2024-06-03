@@ -46,7 +46,6 @@ export class BoardDialogComponent {
     privacyControl: new FormControl('', [Validators.required]),
     collaboratorsControl: new FormControl('', [Validators.required]),
   })
-  userList: number[] = [];
   collaboratorList: number[] = [];
   collaboratorEmailList: string[] = [];
 
@@ -69,15 +68,15 @@ export class BoardDialogComponent {
 
   addCollaborator(): void {
     const email: string = this.formGroup.controls.collaboratorsControl.value ?? '';
-    this.collaboratorEmailList.push(email);
     this.apiService.get<number>(`/user/id/${email}`).subscribe((data) => {
-      this.userList.push(data);
+      this.collaboratorEmailList.push(email);
     });
 
+    this.formGroup.controls.collaboratorsControl.setValue('');
   }
 
   removeCollaborator(index: number): void {
-    this.collaboratorList.splice(index, 1);
+    this.collaboratorEmailList.splice(index, 1);
   }
 
   createBoard(): void {
@@ -85,17 +84,8 @@ export class BoardDialogComponent {
 
     const privacyBoolean: boolean = this.formGroup.controls.privacyControl.value === '' ? false : true;
 
-    if (this.userList.length > 0) {
-      const jsonList = JSON.stringify(this.userList);
-      const stringUserList = JSON.parse(jsonList);
-      this.collaboratorList = stringUserList.map((user: any) => user.userId);   
-    }
-    else {
-      this.collaboratorList = this.userList;
-    }
-
     let addBoardRequest : AddBoardRequest = {
-      boardCollaborators : this.collaboratorList,
+      boardCollaborators : this.collaboratorEmailList,
       boardName: this.formGroup.controls.titleControl.value ?? '',
       isPublic: privacyBoolean
     };

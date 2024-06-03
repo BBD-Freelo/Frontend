@@ -1,5 +1,5 @@
 export interface AddBoard {
-  boardCollaborators: number[];
+  boardCollaborators: string[];
   boardName: string | null;
   isPublic: boolean | false
 }

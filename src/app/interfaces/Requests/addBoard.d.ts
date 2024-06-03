@@ -1,5 +1,5 @@
 export interface AddBoardRequest {
-  boardCollaborators: number[];
+  boardCollaborators: string[];
   boardName: string;
   isPublic: boolean | false
 }
