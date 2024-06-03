@@ -46,7 +46,6 @@ export class BoardDialogComponent {
     privacyControl: new FormControl('', [Validators.required]),
     collaboratorsControl: new FormControl('', [Validators.required]),
   })
-  collaboratorList: number[] = [];
   collaboratorEmailList: string[] = [];
 
 
@@ -59,11 +58,6 @@ export class BoardDialogComponent {
 
   onNoClick(): void {
     this.dialogRef.close();
-  }
-
-  getCollaboratorByEmail(email: string | null): void {
-    
-    
   }
 
   addCollaborator(): void {
