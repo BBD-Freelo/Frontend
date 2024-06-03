@@ -8,6 +8,7 @@ import {
   MatDialog,
  } from '@angular/material/dialog';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
+import { BoardDialogComponent } from '../add-board/board-dialog.component';
 
 @Component({
   selector: 'app-navbar',
@@ -53,6 +54,16 @@ export class NavbarComponent {
           this.boards = this.boards.filter((b) => b.boardId !== board.boardId);
         });
       }
+    });
+  }
+
+  openBoardDialogue(): void {
+    const dialogRef = this.dialog.open(BoardDialogComponent, {
+      
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      
     });
   }
 } 

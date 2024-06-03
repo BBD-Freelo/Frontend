@@ -1,0 +1,77 @@
+<div class="ticket-row">
+  <h1 mat-dialog-title>{{data.title}}</h1>
+  @if (!editMode){
+    <button mat-icon-button (click)="editMode = true">
+        <mat-icon>edit</mat-icon>
+    </button>
+  }
+  @else{
+    <button mat-icon-button (click)="editMode = false">
+      <mat-icon>edit_off</mat-icon>
+  </button>
+  }
+</div>
+<mat-dialog-content>
+  <div class="ticket-body">
+      <form class="form" [formGroup]="formGroup">
+        <div class="ticket-row">
+          <mat-label class="icon-label">
+              <mat-icon>article</mat-icon>
+              Description
+          </mat-label>
+        </div>
+
+        <mat-form-field class="full-width" color="accent">
+          <mat-label>New List</mat-label>
+          <textarea type="text" matInput [formControl]="formGroup.controls.descriptionControl" placeholder="Ex. In Progress"></textarea>
+          @if (formGroup.controls.descriptionControl.hasError('maxlength')) {
+            <mat-error>Please keep description under 250 characters</mat-error>
+          }
+          @if (formGroup.controls.descriptionControl.hasError('pattern')) {
+            <mat-error>Please only enter alphabet characters, numbers, commas fullstops and question marks</mat-error>
+          }
+
+        </mat-form-field>
+
+        <div class="ticket-row">
+          <mat-form-field color="accent">
+            <mat-label>Assigned To</mat-label>
+            <mat-select type="text" matInput [(value)]="assignedId">
+              @for (collaborator of data.collaborators; track collaborator){
+                <mat-option value="{{collaborator.userId}}">{{collaborator.email}}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="ticket-row"> 
+          <mat-form-field color="accent">
+            <mat-label>Select a due date</mat-label>
+            <input matInput [matDatepicker]="datepicker" disabled>
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
+            <mat-datepicker #datepicker disabled="false"></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="search-container">
+          <mat-form-field color="accent">
+          <input matInput placeholder="Search Users" class="search">
+          <button mat-icon-button>
+              <mat-icon>search</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      </form>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="ticket-row">
+    <div>
+      <button mat-button (click)="onNoClick()" cdkFocusInitial>Close</button>
+      <button mat-button (click)="openDeleteDialog(data.id)" color="warn" >Delete</button>
+    </div>
+    @if (editMode){
+      <button mat-button class="save-button" (click)="update()" color="accent">Save</button>
+    }
+  </div>
+</mat-dialog-actions>
