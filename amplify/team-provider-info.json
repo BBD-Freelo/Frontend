@@ -1,19 +1,19 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-freelofe-dev-34987-authRole",
-      "UnauthRoleArn": "arn:aws:iam::263883060207:role/amplify-freelofe-dev-34987-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::263883060207:role/amplify-freelofe-dev-34987-authRole",
+      "AuthRoleName": "amplify-freeloapp-dev-25f6c-authRole",
+      "UnauthRoleArn": "arn:aws:iam::263883060207:role/amplify-freeloapp-dev-25f6c-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::263883060207:role/amplify-freeloapp-dev-25f6c-authRole",
       "Region": "eu-west-1",
-      "DeploymentBucketName": "amplify-freelofe-dev-34987-deployment",
-      "UnauthRoleName": "amplify-freelofe-dev-34987-unauthRole",
-      "StackName": "amplify-freelofe-dev-34987",
-      "StackId": "arn:aws:cloudformation:eu-west-1:263883060207:stack/amplify-freelofe-dev-34987/57c07010-20ba-11ef-9e8f-0a773f3f4ca9",
-      "AmplifyAppId": "d2fno07h4rymuo"
+      "DeploymentBucketName": "amplify-freeloapp-dev-25f6c-deployment",
+      "UnauthRoleName": "amplify-freeloapp-dev-25f6c-unauthRole",
+      "StackName": "amplify-freeloapp-dev-25f6c",
+      "StackId": "arn:aws:cloudformation:eu-west-1:263883060207:stack/amplify-freeloapp-dev-25f6c/52929a20-21a3-11ef-a994-0ad0e10fdf5b",
+      "AmplifyAppId": "d3mdbrne2ul02e"
     },
     "categories": {
       "auth": {
-        "freelofe9bafae98": {}
+        "freeloapp717e729d": {}
       }
     }
   }
