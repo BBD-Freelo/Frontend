@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { MyBoards } from '../../interfaces/entities/myBoard';
 import { MatIcon } from '@angular/material/icon';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { 
   MatDialog,
@@ -25,8 +25,10 @@ import { EditBoardDialogComponent } from '../edit-board/edit-board-dialog.compon
 export class NavbarComponent {
   @Output() newBoard = new EventEmitter<AddBoard>();
   boards: MyBoards[] = [];
+  currentBoardId!: number;
 
-  constructor(private apiService: ApiService, private router: Router, public dialog: MatDialog) {
+  constructor(private route: ActivatedRoute, private apiService: ApiService, private router: Router, public dialog: MatDialog) {
+    this.route.params.subscribe( params => this.currentBoardId = params["board"] );
     this.loadBoards();
   }
 
@@ -50,6 +52,7 @@ export class NavbarComponent {
 
   // This may need some TLC not sure if this is the best way to do this
   // I accually think this is the best way is to use nested routing with the nav being the parent 
+
   navigateToBoard(boardId: number) {
     const board = this.boards.find((b) => b.boardId === boardId);
     if (board) {

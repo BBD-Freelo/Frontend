@@ -30,7 +30,6 @@ export class HeaderComponent {
   async signOutUser() {
     try {
       await signOut();
-      console.log('Sign out success!');
       this.router.navigate(['/login']);
     } catch (error) {
       console.error('Error signing out:', error);

@@ -1,3 +1,13 @@
+table {
+    text-align: left;
+}
+
+td img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;   
+}
+
 .ticket-body{
     display: flex;
     flex-direction: column;
@@ -9,9 +19,10 @@
 .ticket-row{
     width: 100%;
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    gap: 3em;
+    gap: 1em;
 }
 
 .ticket-row img{
@@ -40,7 +51,7 @@
     display: flex;
     gap: 5px;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .full-width {

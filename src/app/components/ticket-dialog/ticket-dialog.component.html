@@ -65,34 +65,41 @@
           </mat-label>
           <p>{{data.description}}</p>
       </div>
-      <div class="ticket-row">
-          <mat-label class="icon-label">
+
+      <table>
+        <tr>
+          <td>
+            <mat-label class="icon-label">
               <mat-icon>schedule</mat-icon>
               Due Date: {{data.due}}
-          </mat-label>
-          @if (data.assigned) {
-            <mat-label class="icon-label">
-              <mat-icon>person</mat-icon>
-              Assigned To: 
-              <img src="{{profileUrl}}" alt="avatar" class="avatar"> 
-              {{data.assigned?.email}}
             </mat-label>
-          }
-      </div>
-      <div class="ticket-row">
-          <div>
+          </td>
+          <td>
+            @if (data.assigned) {
               <mat-label class="icon-label">
-                  <mat-icon>calendar_month</mat-icon>
-                  Created: {{data.created}}
+                <mat-icon>person</mat-icon>
+                Assigned To: 
+                <img src="{{profileUrl}}" alt="avatar" class="avatar"> 
+                {{data.assigned?.email}}
               </mat-label>
-          </div>
-          <div>
-              <mat-label class="icon-label">
-                  <mat-icon>calendar_month</mat-icon>
-                  Last Updated: {{data.updated}}
-              </mat-label>
-          </div>
-      </div>
+            }
+          </td> 
+        </tr>
+        <tr>
+          <td>
+            <mat-label class="icon-label">
+              <mat-icon>calendar_month</mat-icon>
+              Created: {{data.created}}
+            </mat-label>
+          </td>
+          <td>
+            <mat-label class="icon-label">
+              <mat-icon>calendar_month</mat-icon>
+              Last Updated: {{data.updated}}
+            </mat-label>
+          </td>
+        </tr>
+      </table>
     }
   </div>
 </mat-dialog-content>

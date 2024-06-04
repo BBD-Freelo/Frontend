@@ -3,11 +3,14 @@
     <mat-form-field class="full-width" color="accent">
       <mat-label>New List</mat-label>
       <input type="text" matInput [formControl]="valueFormControl" placeholder="Ex. In Progress">
+      <button matSuffix mat-icon-button color="accent" class type="submit">
+        <mat-icon>add_circle</mat-icon>
+      </button>
       @if (valueFormControl.hasError('required')) {
         <mat-error>Please enter a list name</mat-error>
       }
       @if (valueFormControl.hasError('maxlength') || valueFormControl.hasError('minlength')) {
-        <mat-error>Please enter a value between 1 and 20 characters</mat-error>
+        <mat-error>Please enter a value between 1 and 15 characters</mat-error>
       }
       @if (valueFormControl.hasError('pattern')) {
         <mat-error>Please only enter a-z or 1-9</mat-error>
