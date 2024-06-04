@@ -44,7 +44,14 @@
         </div>
       }
       @if (error) {
-        No Board found :(
+        <div class="error-container">
+          <app-error-view
+            [header]="'No board ?'"
+            [body]="'Perhaps you should create a board'"
+          >
+
+          </app-error-view>
+        </div>
       }
     </mat-sidenav-content>
   </mat-sidenav-container>
