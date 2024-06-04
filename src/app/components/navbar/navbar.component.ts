@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { MyBoards } from '../../interfaces/entities/myBoard';
 import { MatIcon } from '@angular/material/icon';
@@ -8,6 +8,8 @@ import {
   MatDialog,
  } from '@angular/material/dialog';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
+import { BoardDialogComponent } from '../add-board/board-dialog.component';
+import { AddBoard } from '../../interfaces/components/addBoard';
 
 @Component({
   selector: 'app-navbar',
@@ -20,6 +22,7 @@ import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component'
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
+  @Output() newBoard = new EventEmitter<AddBoard>();
   boards: MyBoards[] = [];
 
   constructor(private apiService: ApiService, private router: Router, public dialog: MatDialog) {
@@ -53,6 +56,31 @@ export class NavbarComponent {
           this.boards = this.boards.filter((b) => b.boardId !== board.boardId);
         });
       }
+    });
+  }
+
+  openBoardDialogue(): void {
+    const data: AddBoard = {
+      boardCollaborators: [],
+      boardName: null,
+      isPublic: false
+    }
+    const dialogRef = this.dialog.open(BoardDialogComponent, {
+      data: data,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        const updateRes = result as AddBoard;
+        console.log(result.boardCollaborators);
+        
+        this.newBoard.emit(updateRes);
+
+        this.apiService.post(`/board/new`, updateRes).subscribe((data) => {
+          this.boards.push(data as MyBoards);
+        });
+      }
+
     });
   }
 } 
