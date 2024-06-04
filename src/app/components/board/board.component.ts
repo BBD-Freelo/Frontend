@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import {
   CdkDragDrop,
   moveItemInArray,
@@ -6,31 +6,25 @@ import {
   CdkDrag,
   CdkDropList,
 } from '@angular/cdk/drag-drop';
-import { ticketComponent } from '../../components/ticket/ticket.component';
+import { ticketComponent } from '../ticket/ticket.component';
 import { ActivatedRoute } from "@angular/router";
 import { ApiService } from '../../services/api.service';
 import { Ticket } from '../../interfaces/entities/ticket';
-import { AddListComponent } from '../../components/add-list/add-list.component';
-import { AddTicketComponent } from "../../components/add-item/add-ticket.component";
-import { HttpErrorResponse } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { AddListComponent } from '../add-list/add-list.component';
+import { AddTicketComponent } from "../add-item/add-ticket.component";
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { HeaderComponent } from '../../components/header/header.component';
 import { Board } from '../../interfaces/entities/board';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { NavbarComponent  } from '../../components/navbar/navbar.component';
 import {AddListResponse} from "../../interfaces/Responses/addList";
 import {AddTicketResponse} from "../../interfaces/Responses/addTicket";
 import {MoveTicketRequest} from "../../interfaces/Requests/moveTicket";
 import {SuccesResponse} from "../../interfaces/Responses/success";
 import { List } from '../../interfaces/entities/list';
 import { MatDialog } from '@angular/material/dialog';
-import { DeleteDialogComponent } from '../../components/delete-dialog/delete-dialog.component';
+import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
 import { RemoveTicketResponse, UpdateTicketResponse } from '../../interfaces/Responses/ticketResponse';
-import { ErrorViewComponent } from '../../components/error-view/error-view.component';
+import { ErrorViewComponent } from '../error-view/error-view.component';
 
 @Component({
   selector: 'app-board',
@@ -40,41 +34,22 @@ import { ErrorViewComponent } from '../../components/error-view/error-view.compo
     CdkDrag,
     ticketComponent,
     ErrorViewComponent,
-    NavbarComponent,
     AddListComponent,
     MatProgressSpinner,
-    HeaderComponent,
     AddTicketComponent,
-    MatSidenavModule,
     MatButtonModule,
     MatIcon],
   templateUrl: './board.component.html',
   styleUrl: './board.component.css'
 })
 export class BoardComponent {
-  board!: Board;
+  @Input({required: true}) board!: Board;
   currentBoard!: number;
   found = false;
   error = false;
 
   constructor(private route: ActivatedRoute, private apiService: ApiService, public dialog: MatDialog) {
-    this.route.params.subscribe( params => this.currentBoard = params["board"] );
-
-    this.loadBoard(this.currentBoard);
-  }
-
-  loadBoard(boardId: number) {
-    this.apiService.get<Board >(`/board/${boardId}`).pipe(
-      catchError((error: HttpErrorResponse) => {
-        this.error = true;
-        return of(null);
-      })
-    ).subscribe((data) => {
-      if (data !== null) {
-        this.found = true;
-        this.board = data;
-      }
-    });
+    this.route.params.subscribe(params => this.currentBoard = params["board"]);
   }
 
   drop(event: CdkDragDrop<Ticket[]>) {
@@ -114,7 +89,6 @@ export class BoardComponent {
     const list = this.board.lists.find(list => list.listId === ticket.listId);
 
     if (list) {
-
       const newTicket: Ticket = {
         ticketId: ticket.ticketId,
         user: {
@@ -178,7 +152,7 @@ export class BoardComponent {
     });
   }
 
-  handleNewList(event: AddListResponse) {
+  addNewList(event: AddListResponse) {
     this.board.lists.push({
       listId: event.listId,
       listName: event.listName,
