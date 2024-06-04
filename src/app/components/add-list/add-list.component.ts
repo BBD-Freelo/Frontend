@@ -22,7 +22,7 @@ import { MatInputModule } from '@angular/material/input';
 export class AddListComponent {
   @Output() newList = new EventEmitter<AddListResponse>();
   @Input({required: true}) boardId!: number;
-  valueFormControl = new FormControl('', [Validators.required, Validators.maxLength(20), Validators.minLength(1), Validators.pattern('[a-zA-Z0-9 ]*')]);
+  valueFormControl = new FormControl('', [Validators.required, Validators.maxLength(15), Validators.minLength(1), Validators.pattern('[a-zA-Z0-9 ]*')]);
 
   constructor(private apiService: ApiService) {}
 
