@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
           password: password
         });
 
-        this.router.navigate(['/board/1']);
+        this.router.navigate(['/board/0']);
       }
     } catch (err: any) {
 

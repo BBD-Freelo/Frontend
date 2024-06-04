@@ -1,0 +1,39 @@
+<div class="board-container">
+  @for (list of board?.lists; track list) {
+    <div class="list-column">
+      <div class="list-header">
+        <h2>{{ list.listName }}</h2>
+        <button (click)="openDeleteDialog(list)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+      <div class="list-container">
+        <div
+          cdkDropList
+          [id]=list.listId.toString()
+          [cdkDropListData]="list.tickets"
+          [cdkDropListConnectedTo]="getConnectedLists(list.listId)"
+          class="list"
+          (cdkDropListDropped)="drop($event)">
+          @for (ticket of list.tickets; track ticket) {
+            <app-ticket [ticket]="ticket" [collaborators]="board.collaborators" (removeTicket)="removeTicket($event)" (updateTicket)="updateTicket($event)"></app-ticket>
+          }
+        </div>
+      </div>
+      <app-add-ticket [listId]="list.listId" (newTicket)="addNewTicket($event)"></app-add-ticket>
+    </div>
+  }
+  <div class="addlist-container">
+    <h2>Add List</h2>
+    <app-add-list [boardId]="this.currentBoard" (newList)="addNewList($event)"></app-add-list>
+  </div>
+  @if (error) {
+    <div class="error-container">
+      <app-error-view
+        [header]="'Oops! Something went wrong'"
+        [body]="'Please try again later'"
+      >
+      </app-error-view>
+    </div>
+  }
+</div>
