@@ -30,6 +30,7 @@ import { List } from '../../interfaces/entities/list';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialogComponent } from '../../components/delete-dialog/delete-dialog.component';
 import { RemoveTicketResponse, UpdateTicketResponse } from '../../interfaces/Responses/ticketResponse';
+import { ErrorViewComponent } from '../../components/error-view/error-view.component';
 
 @Component({
   selector: 'app-board',
@@ -38,6 +39,7 @@ import { RemoveTicketResponse, UpdateTicketResponse } from '../../interfaces/Res
     CdkDropList,
     CdkDrag,
     ticketComponent,
+    ErrorViewComponent,
     NavbarComponent,
     AddListComponent,
     MatProgressSpinner,

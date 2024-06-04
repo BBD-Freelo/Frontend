@@ -43,8 +43,23 @@
           <app-add-list [boardId]="this.currentBoard" (newList)="handleNewList($event)"></app-add-list>
         </div>
       }
+      @if (board.lists.length === 0) {
+        <div class="empty-container">
+          <app-error-view
+            [header]="'No lists ?'"
+            [body]="'Perhaps you should create a list'"
+          >
+          </app-error-view>
+        </div>
+      }
       @if (error) {
-        No Board found :(
+        <div class="error-container">
+          <app-error-view
+            [header]="'Oops! Something went wrong'"
+            [body]="'Please try again later'"
+          >
+          </app-error-view>
+        </div>
       }
     </mat-sidenav-content>
   </mat-sidenav-container>
