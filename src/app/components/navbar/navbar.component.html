@@ -2,6 +2,9 @@
     @for (board of boards; track board) {
         <div class="nav-item">
             <h4 mat-line (click)="navigateToBoard(board.boardId)" class="link">{{ board.boardName }}</h4>
+            <button (click)="openEditDialog(board)">
+                <mat-icon>edit</mat-icon>
+            </button>
             <button (click)="openDeleteDialog(board)">
                 <mat-icon>delete</mat-icon>
             </button>

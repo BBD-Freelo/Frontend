@@ -10,6 +10,7 @@ import {
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
 import { BoardDialogComponent } from '../add-board/board-dialog.component';
 import { AddBoard } from '../../interfaces/components/addBoard';
+import { EditBoardDialogComponent } from '../edit-board/edit-board-dialog.component';
 
 @Component({
   selector: 'app-navbar',
@@ -38,22 +39,68 @@ export class NavbarComponent {
     });
   }
 
+  loadCollaborators(board: MyBoards) {
+    this.apiService.get<string[]>(`/user/collaborators/${board.boardId}`)
+    .subscribe((data) => {
+      if (data !== null) {
+        board.boardCollaborators = data;
+      }
+    });
+  }
+
   // This may need some TLC not sure if this is the best way to do this
   // I accually think this is the best way is to use nested routing with the nav being the parent 
   navigateToBoard(boardId: number) {
-    this.router.navigateByUrl('/', {skipLocationChange: true})
-      .then(()=>this.router.navigate(['board',boardId.toString()]));
+    const board = this.boards.find((b) => b.boardId === boardId);
+    if (board) {
+      console.log(board);
+      
+      this.loadCollaborators(board);
+      this.router.navigateByUrl('/', {skipLocationChange: true})
+        .then(()=>this.router.navigate(['board',boardId.toString()]));
+    }
   }
 
   openDeleteDialog(board: MyBoards): void {
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
-      data: {name: board.boardName, id: board.boardId},
+      data: {name: board.boardName, id: board.boardId, boardCollaborators: board.boardCollaborators},
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.apiService.delete(`/board/remove/${board.boardId}`).subscribe(() => {
           this.boards = this.boards.filter((b) => b.boardId !== board.boardId);
+        });
+      }
+    });
+  }
+
+  openEditDialog(board: MyBoards): void {
+    const data: AddBoard = {
+      boardId: board.boardId,
+      boardCollaborators: board.boardCollaborators,
+      boardName: board.boardName,
+      isPublic: false
+    }
+    const dialogRef = this.dialog.open(EditBoardDialogComponent, {
+      data: data,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        const updateRes = result as AddBoard;
+        this.apiService.patch(`/board/edit`, updateRes).subscribe(() => {
+          this.boards = this.boards.map((b) => {
+            if (b.boardId === board.boardId) {
+              return {
+                boardId: b.boardId,
+                boardName: updateRes.boardName ?? b.boardName,
+                boardCollaborators: updateRes.boardCollaborators,
+                isPublic: false
+              };
+            }
+            return b;
+          });
         });
       }
     });
@@ -72,7 +119,6 @@ export class NavbarComponent {
     dialogRef.afterClosed().subscribe(result => {
       if(result){
         const updateRes = result as AddBoard;
-        console.log(result.boardCollaborators);
         
         this.newBoard.emit(updateRes);
 
