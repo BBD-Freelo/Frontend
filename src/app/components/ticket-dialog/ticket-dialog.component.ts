@@ -69,6 +69,8 @@ export class TicketDialogComponent {
   update(): void {
     if (this.formGroup.controls.descriptionControl.invalid) return;
 
+    console.log(this.data);
+    
     let UpdateTicketResponse: UpdateTicketResponse = {
       isEdit: true,
       ticketId: this.data.id,
