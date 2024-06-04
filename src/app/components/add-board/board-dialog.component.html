@@ -1,0 +1,48 @@
+<mat-dialog-content>
+<form class="board-body" [formGroup]="formGroup">
+  <div class="board-row">
+    <mat-icon>title</mat-icon>
+    <mat-label class="icon-label">Title</mat-label>
+  </div>
+  <mat-form-field class="full-width" color="accent">
+    <input type="text" placeholder="Board Title" id="title" matInput [formControl]="formGroup.controls.titleControl" name="title" required />
+  </mat-form-field>
+  <div class="board-row">
+    <div class="icon-group">
+      <mat-icon>lock</mat-icon>
+      <mat-label class="icon-label">Private</mat-label>
+    </div>
+    <mat-slide-toggle [formControl]="formGroup.controls.privacyControl"></mat-slide-toggle>
+    <div class="icon-group">
+      <mat-icon>public</mat-icon>
+      <mat-label class="icon-label">Public</mat-label>
+    </div>
+  </div>
+  <div class="board-row">
+    <mat-icon>group_add</mat-icon>
+    <mat-label class="icon-label">Collaborators</mat-label>
+  </div>
+  <mat-form-field class="full-width" color="accent">
+    <input placeholder="Enter collaborator email addresses" id="collaborator" matInput name="collaborator" [formControl]="formGroup.controls.collaboratorsControl" required >
+    <button mat-icon-button matSuffix (click)="addCollaborator()">
+      <mat-icon>add</mat-icon>
+    </button>
+    @for (collaborator of collaboratorEmailList; track $index) {
+      <mat-chip-listbox>
+        <mat-chip >
+          {{collaborator}}
+          <mat-icon matChipRemove (click)="removeCollaborator($index)">cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-listbox>
+    }
+  </mat-form-field>
+</form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="space-between">
+    <div>
+      <button mat-button (click)="onNoClick()" cdkFocusInitial>Cancel</button>
+    </div>
+      <button mat-button type="submit" class="save-button" (click)="createBoard()" color="accent">Save</button>
+  </div> 
+</mat-dialog-actions>
