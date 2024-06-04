@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit  } from '@angular/core';
 import { FormControl, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
 import { signIn } from 'aws-amplify/auth';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,6 +7,7 @@ import { MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Regex } from '../../../enums/regex';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 
 @Component({
@@ -16,16 +17,28 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   passwordFormControl = new FormControl('', [Validators.required, Validators.minLength(8)]);
   emailFormControl = new FormControl('', [Validators.required, Validators.pattern(Regex.Email)]);
   loginError: string | null = null;
 
   email: string = '';
   password: string = '';
+  user: any = null;
 
-  constructor(private router: Router){
+  constructor(private router: Router, private authService: AuthService){
      
+  }
+
+  async ngOnInit() {
+    try {
+      this.user = await this.authService.getCurrentUser();
+      if (this.user) {
+        this.router.navigate(['/board/1']);  
+      }
+    } catch (err) {
+
+    }   
   }
 
   async signInUser(){
