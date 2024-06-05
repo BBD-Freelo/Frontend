@@ -5,7 +5,13 @@
     <mat-label class="icon-label">Title</mat-label>
   </div>
   <mat-form-field class="full-width" color="accent">
-    <input type="text" placeholder={{data.boardName}} id="title" matInput [formControl]="formGroup.controls.titleControl" name="title" required />
+    <input type="text" placeholder={{data.boardName}} id="title" matInput [formControl]="formGroup.controls.titleControl" name="title" />
+    @if (formGroup.controls.titleControl.hasError('maxlength')) {
+      <mat-error>Please keep title under 9 characters</mat-error>
+    }
+    @if (formGroup.controls.titleControl.hasError('pattern')) {
+      <mat-error>Please only enter alphabet characters, numbers, commas fullstops and question marks</mat-error>
+    }
   </mat-form-field>
   <div class="board-row">
     <mat-icon>group_add</mat-icon>
@@ -25,6 +31,15 @@
           }
         </mat-chip>
       </mat-chip-listbox>
+    }
+    @if (formGroup.controls.collaboratorsControl.hasError('pattern')) {
+      <mat-error>Please enter a valid email address</mat-error>
+    }
+    @if (formGroup.controls.collaboratorsControl.hasError('maxlength')) {
+      <mat-error>Please keep collaborator emails under 50 characters</mat-error>
+    }
+    @if (formGroup.controls.collaboratorsControl.hasError('notFound')) {
+      <mat-error>This email address does not exist</mat-error>
     }
   </mat-form-field>
 </form>
