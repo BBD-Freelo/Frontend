@@ -15,7 +15,7 @@ import { AddBoardRequest } from '../../interfaces/Requests/addBoard';
 import { MatChipsModule } from '@angular/material/chips';
 import { ApiService } from '../../services/api.service';
 import { Subscription } from 'rxjs';
-import { Regex } from '../../../enums/regex';
+import { Regex } from '../../enums/regex';
 
 @Component({
   selector: 'app-board-dialog',
