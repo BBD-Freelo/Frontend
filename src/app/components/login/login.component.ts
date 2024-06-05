@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
     try {
       this.user = await this.authService.getCurrentUser();
       if (this.user) {
-        this.router.navigate(['/board/1']);  
+        this.router.navigate(['/board/0']);  
       }
     } catch (err) {
 

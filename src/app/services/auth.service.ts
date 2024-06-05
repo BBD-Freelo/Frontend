@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { from, Observable } from 'rxjs';
-import { getCurrentUser, fetchAuthSession } from 'aws-amplify/auth';
+import {Injectable} from '@angular/core';
+import {from} from 'rxjs';
+import {fetchAuthSession, getCurrentUser} from 'aws-amplify/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +11,8 @@ export class AuthService {
 
   async getCurrentUser(): Promise<any> {
     try {
-      const user = await getCurrentUser();
-      console.log("🚀 ~ AuthService ~ getCurrentUser ~ user:", user)
-      return user;
+      return await getCurrentUser();
     } catch (error) {
-      console.error('Error getting current user:', error);
       throw error;
     }
   }
@@ -28,11 +25,10 @@ export class AuthService {
     }
     return Math.abs(hash);
   }
-  
+
   mapUserIdToProfileImage(userId: string): number {
     const hashValue = this.hashStringToNumber(userId);
-    const imageIndex = (hashValue % 5) + 1;
-    return imageIndex;
+    return (hashValue % 5) + 1;
   }
 
   async getProfileUrl(): Promise<string> {
@@ -48,11 +44,8 @@ export class AuthService {
 
   async getUserSession(): Promise<any> {
     try {
-      const session = await fetchAuthSession();
-      console.log("🚀 ~ AuthService ~ getUserSession ~ session:", session)
-      return session;
+      return await fetchAuthSession();
     } catch (error) {
-      console.error('Error fetching user session:', error);
       throw error;
     }
   }
@@ -62,12 +55,9 @@ export class AuthService {
       (async () => {
         try {
           const session = await fetchAuthSession();
-          console.log("🚀 ~ AuthService ~ getUserSession ~ session:", session);
           if (session && session.tokens) {
-            console.log("🚀 ~ AuthService ~ getUserSession ~ session:", session);
             return session.tokens.accessToken;
           } else {
-            console.error('Error: Session or tokens are undefined');
             throw new Error('Session or tokens are undefined');
           }
         } catch (error) {

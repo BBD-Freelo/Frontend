@@ -97,19 +97,28 @@ export class NavbarComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        const updateRes = result as AddBoard;
-        this.apiService.patch(`/board/edit`, updateRes).subscribe(() => {
+        const updateRes: AddBoard = result;
+        this.boards = this.boards.map((b) => {
+          if (b.boardId === data.boardId) {
+            return {
+              boardId: data.boardId,
+              boardName: data.boardName || "name not found",
+              boardCollaborators: data.boardCollaborators
+            }
+          }
+          return b;
+        })
+        this.apiService.patch<MyBoards,AddBoard>(`/board/edit`, updateRes).subscribe((data) => {
           this.boards = this.boards.map((b) => {
-            if (b.boardId === board.boardId) {
+            if (b.boardId === data.boardId) {
               return {
-                boardId: b.boardId,
-                boardName: updateRes.boardName ?? b.boardName,
-                boardCollaborators: updateRes.boardCollaborators,
-                isPublic: false
-              };
+                boardId: data.boardId,
+                boardName: data.boardName,
+                boardCollaborators: data.boardCollaborators
+              }
             }
             return b;
-          });
+          })
         });
       }
     });
@@ -140,4 +149,4 @@ export class NavbarComponent {
 
     });
   }
-} 
+}

@@ -81,7 +81,8 @@ export class BoardDialogComponent {
     let addBoardRequest : AddBoardRequest = {
       boardCollaborators : this.collaboratorEmailList,
       boardName: this.formGroup.controls.titleControl.value ?? '',
-      isPublic: privacyBoolean
+      isPublic: privacyBoolean,
+      isOwner: true
     };
 
     this.dialogRef.close(addBoardRequest);
