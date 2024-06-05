@@ -3,4 +3,5 @@ export interface AddBoard {
   boardCollaborators: User[];
   boardName: string | null;
   isPublic: boolean | false
+  isOwner?: boolean;
 }

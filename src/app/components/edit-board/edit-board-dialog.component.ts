@@ -14,11 +14,6 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AddBoardRequest } from '../../interfaces/Requests/addBoard';
 import { MatChipsModule } from '@angular/material/chips';
 import { ApiService } from '../../services/api.service';
-import { Subscription } from 'rxjs';
-
-interface User {
-  email: string;
-}
 
 @Component({
   selector: 'app-edit-board-dialog',
@@ -49,8 +44,8 @@ export class EditBoardDialogComponent {
     titleControl: new FormControl('', [Validators.maxLength(20), Validators.pattern("^[a-zA-Z0-9.,?!/ ]*$")]),
     collaboratorsControl: new FormControl('', [Validators.required]),
   })
-
   collaboratorEmailList: string[] = [];
+  ownerList: boolean[] = [];
 
 
   constructor(
@@ -61,6 +56,7 @@ export class EditBoardDialogComponent {
   ) {
     for (let collaborators in data.boardCollaborators) {
       this.collaboratorEmailList.push(data.boardCollaborators[collaborators].email);
+      this.ownerList.push(data.boardCollaborators[collaborators].isOwner);
     }
   }
 

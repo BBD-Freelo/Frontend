@@ -2,5 +2,6 @@ export interface AddBoardRequest {
   boardId?: number;
   boardCollaborators: string[];
   boardName: string;
-  isPublic: boolean | false
+  isPublic: boolean | false;
+  isOwner?: boolean;
 }
