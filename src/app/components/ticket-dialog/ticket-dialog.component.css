@@ -11,7 +11,6 @@ td img {
 .ticket-body{
     display: flex;
     flex-direction: column;
-    gap: 1.5em;
     margin: 10px;
     width: 600px;
 }
@@ -47,6 +46,10 @@ td img {
     overflow-y: auto;
 }
 
+.email-input{
+    width: 100%;
+}
+
 .icon-label{
     display: flex;
     gap: 5px;
@@ -60,4 +63,8 @@ td img {
 
 .save-button{
     justify-self: flex-end;
+}
+
+table{
+    border-spacing: 0 2em;
 }
