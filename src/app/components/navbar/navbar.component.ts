@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { MyBoards } from '../../interfaces/entities/myBoard';
 import { MatIcon } from '@angular/material/icon';
@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import {
   MatDialog,
- } from '@angular/material/dialog';
+} from '@angular/material/dialog';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
 import { BoardDialogComponent } from '../add-board/board-dialog.component';
 import { AddBoard } from '../../interfaces/components/addBoard';
@@ -34,24 +34,21 @@ export class NavbarComponent {
 
   loadBoards() {
     this.apiService.get<MyBoards[] >(`/board`)
-    .subscribe((data) => {
-      if (data !== null) {
-        this.boards = data;
-      }
-    });
+      .subscribe((data) => {
+        if (data !== null) {
+          this.boards = data;
+        }
+      });
   }
 
   loadCollaborators(board: MyBoards) {
     this.apiService.get<string[]>(`/user/collaborators/${board.boardId}`)
-    .subscribe((data) => {
-      if (data !== null) {
-        board.boardCollaborators = data;
-      }
-    });
+      .subscribe((data) => {
+        if (data !== null) {
+          board.boardCollaborators = data;
+        }
+      });
   }
-
-  // This may need some TLC not sure if this is the best way to do this
-  // I accually think this is the best way is to use nested routing with the nav being the parent
 
   navigateToBoard(boardId: number) {
     const board = this.boards.find((b) => b.boardId === boardId);
@@ -73,6 +70,15 @@ export class NavbarComponent {
       if (result) {
         this.apiService.delete(`/board/remove/${board.boardId}`).subscribe(() => {
           this.boards = this.boards.filter((b) => b.boardId !== board.boardId);
+         if (this.currentBoardId == board.boardId) {
+            console.log("Here");
+            if (this.boards.length > 0) {
+              this.navigateToBoard(this.boards[0].boardId);
+            } 
+            else {
+              this.navigateToBoard(0);
+            }
+          }
         });
       }
     });
@@ -135,7 +141,9 @@ export class NavbarComponent {
         this.newBoard.emit(updateRes);
 
         this.apiService.post(`/board/new`, updateRes).subscribe((data) => {
-          this.boards.push(data as MyBoards);
+          const board = data as MyBoards;
+          this.boards.push(board);
+          this.navigateToBoard(board.boardId);
         });
       }
 
