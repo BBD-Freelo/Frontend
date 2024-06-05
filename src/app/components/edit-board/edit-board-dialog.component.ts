@@ -49,7 +49,7 @@ export class EditBoardDialogComponent {
     titleControl: new FormControl('', [Validators.maxLength(20), Validators.pattern("^[a-zA-Z0-9.,?!/ ]*$")]),
     collaboratorsControl: new FormControl('', [Validators.required]),
   })
-  
+
   collaboratorEmailList: string[] = [];
 
 
@@ -61,7 +61,6 @@ export class EditBoardDialogComponent {
   ) {
     for (let collaborators in data.boardCollaborators) {
       this.collaboratorEmailList.push(data.boardCollaborators[collaborators].email);
-      console.log(this.collaboratorEmailList)
     }
   }
 
