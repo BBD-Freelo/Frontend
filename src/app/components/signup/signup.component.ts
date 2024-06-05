@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Regex } from '../../../enums/regex';
+import { Regex } from '../../enums/regex';
 import { Router } from '@angular/router';
 
 @Component({
@@ -36,7 +36,7 @@ export class SignupComponent {
           username: this.emailFormControl.value,
           password: this.passwordFormControl.value,
           });
-          
+
           this.router.navigate(['/confirm-signup']);
       }
     } catch (error: any) {

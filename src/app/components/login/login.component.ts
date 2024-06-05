@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Regex } from '../../../enums/regex';
+import { Regex } from '../../enums/regex';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
@@ -27,18 +27,18 @@ export class LoginComponent implements OnInit {
   user: any = null;
 
   constructor(private router: Router, private authService: AuthService){
-     
+
   }
 
   async ngOnInit() {
     try {
       this.user = await this.authService.getCurrentUser();
       if (this.user) {
-        this.router.navigate(['/board/0']);  
+        this.router.navigate(['/board/0']);
       }
     } catch (err) {
 
-    }   
+    }
   }
 
   async signInUser(){

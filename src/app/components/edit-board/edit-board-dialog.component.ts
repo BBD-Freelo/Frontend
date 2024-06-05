@@ -14,7 +14,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AddBoardRequest } from '../../interfaces/Requests/addBoard';
 import { MatChipsModule } from '@angular/material/chips';
 import { ApiService } from '../../services/api.service';
-import { Regex } from '../../../enums/regex';
+import { Regex } from '../../enums/regex';
 
 @Component({
   selector: 'app-edit-board-dialog',
@@ -71,7 +71,7 @@ export class EditBoardDialogComponent {
     try {
       this.apiService.get<number>(`/user/id/${email}`).subscribe((data) => {
         this.collaboratorEmailList.push(email);
-        
+
       });
     } catch (error: any) {
       if (error.status === 404){
@@ -81,7 +81,7 @@ export class EditBoardDialogComponent {
       }
     }
     this.formGroup.controls.collaboratorsControl.setValue('');
-    
+
   }
 
   removeCollaborator(index: number): void {
