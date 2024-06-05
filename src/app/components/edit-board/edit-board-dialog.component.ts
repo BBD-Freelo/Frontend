@@ -14,11 +14,6 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AddBoardRequest } from '../../interfaces/Requests/addBoard';
 import { MatChipsModule } from '@angular/material/chips';
 import { ApiService } from '../../services/api.service';
-import { Subscription } from 'rxjs';
-
-interface User {
-  email: string;
-}
 
 @Component({
   selector: 'app-edit-board-dialog',
@@ -49,9 +44,8 @@ export class EditBoardDialogComponent {
     titleControl: new FormControl('', [Validators.maxLength(20), Validators.pattern("^[a-zA-Z0-9.,?!/ ]*$")]),
     collaboratorsControl: new FormControl('', [Validators.required]),
   })
-  
-  users: User[] = [];
   collaboratorEmailList: string[] = [];
+  ownerList: boolean[] = [];
 
 
   constructor(
@@ -60,23 +54,14 @@ export class EditBoardDialogComponent {
     public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: AddBoard,
   ) {
-    if (this.data.boardCollaborators !== this.collaboratorEmailList){
-      this.getCollaboratorEmails(this.data.boardCollaborators);
+    for (let collaborators in data.boardCollaborators) {
+      this.collaboratorEmailList.push(data.boardCollaborators[collaborators].email);
+      this.ownerList.push(data.boardCollaborators[collaborators].isOwner);
     }
   }
 
   onNoClick(): void {
     this.dialogRef.close();
-  }
-
-  getCollaboratorEmails(list: string[]): void {
-    if (list === null) return;
-    for(let id of list) {
-      this.apiService.get<User>(`/user/email/${id}`).subscribe((data) => {
-        this.users.push(data);
-        this.collaboratorEmailList.push(data.email);
-      });
-    }
   }
 
   addCollaborator(): void {
@@ -103,6 +88,7 @@ export class EditBoardDialogComponent {
       boardName: this.formGroup.controls.titleControl.value ?? '',
       isPublic: false
     };
+    this.collaboratorEmailList = [];
     this.dialogRef.close(addBoardRequest);
   }
 

@@ -4,7 +4,7 @@ import { MyBoards } from '../../interfaces/entities/myBoard';
 import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
-import { 
+import {
   MatDialog,
  } from '@angular/material/dialog';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
@@ -51,13 +51,13 @@ export class NavbarComponent {
   }
 
   // This may need some TLC not sure if this is the best way to do this
-  // I accually think this is the best way is to use nested routing with the nav being the parent 
+  // I accually think this is the best way is to use nested routing with the nav being the parent
 
   navigateToBoard(boardId: number) {
     const board = this.boards.find((b) => b.boardId === boardId);
     if (board) {
       console.log(board);
-      
+
       this.loadCollaborators(board);
       this.router.navigateByUrl('/', {skipLocationChange: true})
         .then(()=>this.router.navigate(['board',boardId.toString()]));
@@ -91,19 +91,28 @@ export class NavbarComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        const updateRes = result as AddBoard;
-        this.apiService.patch(`/board/edit`, updateRes).subscribe(() => {
+        const updateRes: AddBoard = result;
+        this.boards = this.boards.map((b) => {
+          if (b.boardId === data.boardId) {
+            return {
+              boardId: data.boardId,
+              boardName: data.boardName || "name not found",
+              boardCollaborators: data.boardCollaborators
+            }
+          }
+          return b;
+        })
+        this.apiService.patch<MyBoards,AddBoard>(`/board/edit`, updateRes).subscribe((data) => {
           this.boards = this.boards.map((b) => {
-            if (b.boardId === board.boardId) {
+            if (b.boardId === data.boardId) {
               return {
-                boardId: b.boardId,
-                boardName: updateRes.boardName ?? b.boardName,
-                boardCollaborators: updateRes.boardCollaborators,
-                isPublic: false
-              };
+                boardId: data.boardId,
+                boardName: data.boardName,
+                boardCollaborators: data.boardCollaborators
+              }
             }
             return b;
-          });
+          })
         });
       }
     });
@@ -122,7 +131,7 @@ export class NavbarComponent {
     dialogRef.afterClosed().subscribe(result => {
       if(result){
         const updateRes = result as AddBoard;
-        
+
         this.newBoard.emit(updateRes);
 
         this.apiService.post(`/board/new`, updateRes).subscribe((data) => {
@@ -132,4 +141,4 @@ export class NavbarComponent {
 
     });
   }
-} 
+}
