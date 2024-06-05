@@ -47,10 +47,10 @@
           </mat-form-field>
         </div>
 
-        <div class="ticket-row"> 
+        <div class="ticket-row">
           <mat-form-field color="accent">
             <mat-label>Select a due date</mat-label>
-            <input matInput [matDatepicker]="datepicker" disabled>
+            <input matInput [matDatepicker]="datepicker" (dateChange)="dateChanged($event)" disabled>
             <mat-hint>MM/DD/YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
             <mat-datepicker #datepicker disabled="false"></mat-datepicker>
@@ -80,11 +80,11 @@
             @if (data.assigned) {
               <mat-label class="icon-label">
                 <mat-icon>person</mat-icon>
-                Assigned To: 
+                Assigned To:
                 <img src="{{profileUrl}}" alt="avatar" class="avatar">
               </mat-label>
             }
-          </td> 
+          </td>
         </tr>
         <tr>
           <td>
