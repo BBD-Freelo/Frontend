@@ -31,6 +31,7 @@ export class AddTicketComponent {
       ticketName: this.valueFormControl.value!,
       listId: this.listId
     }
+    this.valueFormControl.reset()
     this.apiService.post<AddTicketResponse, AddTicket>('/ticket/add', newTicket).subscribe((ticket) => {
       this.newTicket.emit(ticket);
     });

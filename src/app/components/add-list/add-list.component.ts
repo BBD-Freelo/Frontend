@@ -33,6 +33,7 @@ export class AddListComponent {
       listName: this.valueFormControl.value!,
       boardId: this.boardId
     }
+    this.valueFormControl.reset();
     this.apiService.post<AddListResponse,addList>('/list/new', newBoard).subscribe((item) => {
       this.newList.emit(item);
     });

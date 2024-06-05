@@ -11,5 +11,5 @@ export interface UpdateTicketResponse {
     ticketName: string;
     ticketDescription: string;
     assignedUser: number | undefined;
-    ticketDueDate: Date;
+    ticketDueDate: Date | string;
 }

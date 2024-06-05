@@ -53,7 +53,6 @@ export class NavbarComponent {
   navigateToBoard(boardId: number) {
     const board = this.boards.find((b) => b.boardId === boardId);
     if (board) {
-      console.log(board);
 
       this.loadCollaborators(board);
       this.router.navigateByUrl('/', {skipLocationChange: true})
@@ -71,10 +70,9 @@ export class NavbarComponent {
         this.apiService.delete(`/board/remove/${board.boardId}`).subscribe(() => {
           this.boards = this.boards.filter((b) => b.boardId !== board.boardId);
          if (this.currentBoardId == board.boardId) {
-            console.log("Here");
             if (this.boards.length > 0) {
               this.navigateToBoard(this.boards[0].boardId);
-            } 
+            }
             else {
               this.navigateToBoard(0);
             }
