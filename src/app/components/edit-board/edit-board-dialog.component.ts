@@ -14,6 +14,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AddBoardRequest } from '../../interfaces/Requests/addBoard';
 import { MatChipsModule } from '@angular/material/chips';
 import { ApiService } from '../../services/api.service';
+import { Regex } from '../../../enums/regex';
 
 @Component({
   selector: 'app-edit-board-dialog',
@@ -41,8 +42,8 @@ import { ApiService } from '../../services/api.service';
 })
 export class EditBoardDialogComponent {
   formGroup = new FormGroup({
-    titleControl: new FormControl('', [Validators.maxLength(20), Validators.pattern("^[a-zA-Z0-9.,?!/ ]*$")]),
-    collaboratorsControl: new FormControl('', [Validators.required]),
+    titleControl: new FormControl('', [Validators.maxLength(9), Validators.pattern("^[a-zA-Z0-9.,?!/ ]*$")]),
+    collaboratorsControl: new FormControl('', [Validators.email, Validators.maxLength(50), Validators.pattern(Regex.Email)]),
   })
   collaboratorEmailList: string[] = [];
   ownerList: boolean[] = [];
@@ -65,12 +66,22 @@ export class EditBoardDialogComponent {
   }
 
   addCollaborator(): void {
+    if (this.formGroup.controls.collaboratorsControl.invalid) return;
     const email: string = this.formGroup.controls.collaboratorsControl.value ?? '';
-    this.apiService.get<number>(`/user/id/${email}`).subscribe((data) => {
-      this.collaboratorEmailList.push(email);
-    });
-
+    try {
+      this.apiService.get<number>(`/user/id/${email}`).subscribe((data) => {
+        this.collaboratorEmailList.push(email);
+        
+      });
+    } catch (error: any) {
+      if (error.status === 404){
+        this.formGroup.controls.collaboratorsControl.setErrors({
+          notFound: true
+        });
+      }
+    }
     this.formGroup.controls.collaboratorsControl.setValue('');
+    
   }
 
   removeCollaborator(index: number): void {
@@ -78,6 +89,7 @@ export class EditBoardDialogComponent {
   }
 
   editBoard(): void {
+    if (this.formGroup.controls.titleControl.invalid) return;
     if (this.formGroup.controls.titleControl.value === ''){
       this.formGroup.controls.titleControl.setValue(this.data.boardName);
     };
