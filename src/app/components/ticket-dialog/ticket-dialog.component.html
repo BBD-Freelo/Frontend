@@ -24,7 +24,9 @@
 
         <mat-form-field class="full-width" color="accent">
           <mat-label>New List</mat-label>
-          <textarea type="text" matInput [formControl]="formGroup.controls.descriptionControl" placeholder="Ex. In Progress"></textarea>
+          <textarea type="text" matInput [formControl]="formGroup.controls.descriptionControl" >
+            {{data.description}}
+          </textarea>
           @if (formGroup.controls.descriptionControl.hasError('maxlength')) {
             <mat-error>Please keep description under 250 characters</mat-error>
           }
@@ -35,7 +37,7 @@
         </mat-form-field>
 
         <div class="ticket-row">
-          <mat-form-field color="accent">
+          <mat-form-field color="accent" class="email-input">
             <mat-label>Assigned To</mat-label>
             <mat-select type="text" matInput [(value)]="assignedId">
               @for (collaborator of data.collaborators; track collaborator){
@@ -79,8 +81,7 @@
               <mat-label class="icon-label">
                 <mat-icon>person</mat-icon>
                 Assigned To: 
-                <img src="{{profileUrl}}" alt="avatar" class="avatar"> 
-                {{data.assigned?.email}}
+                <img src="{{profileUrl}}" alt="avatar" class="avatar">
               </mat-label>
             }
           </td> 

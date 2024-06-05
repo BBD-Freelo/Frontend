@@ -124,11 +124,13 @@ export class BoardComponent {
 
         if (updatedList) {
           const index = updatedList.tickets.findIndex(ticket => ticket.ticketId === updatedTicket.ticketId);
+          const list = updatedList.tickets.splice(index, 1);
           if (index!== -1) {
-            updatedList.tickets[index].assignedUser = updatedTicket.assignedUser;
-            updatedList.tickets[index].ticketDescription = updatedTicket.ticketDescription;
-            updatedList.tickets[index].ticketDueDate = updatedTicket.ticketDueDate;
+            list[0].assignedUser = updatedTicket.assignedUser;
+            list[0].ticketDescription = updatedTicket.ticketDescription;
+            list[0].ticketDueDate = updatedTicket.ticketDueDate;
           }
+          updatedList.tickets.splice(index, 0, list[0]);
         }
       });
     }
