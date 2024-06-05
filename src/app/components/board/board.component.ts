@@ -91,12 +91,8 @@ export class BoardComponent {
     if (list) {
       const newTicket: Ticket = {
         ticketId: ticket.ticketId,
-        user: {
-          userId: 3,
-          userProfilePicture: "sdfjs",
-          email: "email"
-        },
-        assignedUser: null,
+        user: ticket.user,
+        assignedUser: ticket.assignedUser,
         ticketName: ticket.ticketName,
         ticketDescription: ticket.ticketDescription,
         ticketCreateDate: ticket.ticketCreateDate,
@@ -125,7 +121,7 @@ export class BoardComponent {
         const updatedList = this.board.lists.find(list => {
           return list.tickets.some(ticket => ticket.ticketId === updatedTicket.ticketId);
         });
-  
+
         if (updatedList) {
           const index = updatedList.tickets.findIndex(ticket => ticket.ticketId === updatedTicket.ticketId);
           if (index!== -1) {
